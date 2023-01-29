@@ -7,7 +7,7 @@ type Props = {
 };
 
 const Card = ({ camera }: Props) => (
-  <div className="product-card">
+  <div className="product-card is-active">
     <div className="product-card__img">
       <picture>
         <source type="image/webp" srcSet={`${camera.previewImgWebp}, ${camera.previewImgWebp2x}`} />
