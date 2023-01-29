@@ -4,4 +4,5 @@ export const REQUEST_TIMEOUT = 5000;
 
 export enum APIRoute {
   Promo = '/promo',
+  Cameras = '/cameras',
 }

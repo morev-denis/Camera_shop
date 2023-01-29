@@ -6,9 +6,10 @@ import App from './components/app/app';
 
 import { store } from './store';
 
-import { fetchPromoAction } from './store/api-actions';
+import { fetchPromoAction, fetchCamerasAction } from './store/api-actions';
 
 store.dispatch(fetchPromoAction());
+store.dispatch(fetchCamerasAction());
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
