@@ -1,5 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 
+import { getPromo } from './action';
+
 import { Promo } from '../types/promo';
 
 type InitialState = {
@@ -11,7 +13,9 @@ const initialState: InitialState = {
 };
 
 const reducer = createReducer(initialState, (builder) => {
-  //
+  builder.addCase(getPromo, (state, action) => {
+    state.promo = action.payload;
+  });
 });
 
 export { reducer };
