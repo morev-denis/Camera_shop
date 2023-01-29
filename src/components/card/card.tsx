@@ -1,6 +1,6 @@
-import { Camera } from '../../types/camera';
+import StarRating from '../../components/star-rating/star-rating';
 
-import { MAX_RATING } from '../../const';
+import { Camera } from '../../types/camera';
 
 type Props = {
   camera: Camera;
@@ -22,17 +22,7 @@ const Card = ({ camera }: Props) => (
     </div>
     <div className="product-card__info">
       <div className="rate product-card__rate">
-        {Array.from({ length: MAX_RATING }, (element, i) =>
-          i <= camera.rating ? (
-            <svg key={i} width="17" height="16" aria-hidden="true">
-              <use xlinkHref="#icon-full-star"></use>
-            </svg>
-          ) : (
-            <svg key={i} width="17" height="16" aria-hidden="true">
-              <use xlinkHref="#icon-star"></use>
-            </svg>
-          ),
-        )}
+        <StarRating rating={camera.rating} />
 
         <p className="visually-hidden">Рейтинг: {camera.rating}</p>
         <p className="rate__count">

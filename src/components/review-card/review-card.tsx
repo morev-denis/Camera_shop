@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 
-import { Review } from '../../types/review';
+import StarRating from '../../components/star-rating/star-rating';
 
-import { MAX_RATING } from '../../const';
+import { Review } from '../../types/review';
 
 type Props = {
   review: Review;
@@ -18,17 +18,8 @@ const ReviewCard = ({ review }: Props) => (
       </time>
     </div>
     <div className="rate review-card__rate">
-      {Array.from({ length: MAX_RATING }, (element, i) =>
-        i <= review.rating ? (
-          <svg key={i} width="17" height="16" aria-hidden="true">
-            <use xlinkHref="#icon-full-star"></use>
-          </svg>
-        ) : (
-          <svg key={i} width="17" height="16" aria-hidden="true">
-            <use xlinkHref="#icon-star"></use>
-          </svg>
-        ),
-      )}
+      <StarRating rating={review.rating} />
+
       <p className="visually-hidden">Оценка: {review.rating}</p>
     </div>
     <ul className="review-card__list">

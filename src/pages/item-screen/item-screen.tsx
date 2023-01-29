@@ -14,6 +14,7 @@ import Header from '../../components/header/header';
 
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 
+import StarRating from '../../components/star-rating/star-rating';
 import Tabs from '../../components/tabs/tabs';
 import SimilarCameras from '../../components/similar-cameras/similar-cameras';
 import ReviewBlock from '../../components/review-block/review-block';
@@ -21,8 +22,6 @@ import ReviewBlock from '../../components/review-block/review-block';
 import Footer from '../../components/footer/footer';
 
 import NotFoundScreen from '../not-found-screen/not-found-screen';
-
-import { MAX_RATING } from '../../const';
 
 const ItemScreen = () => {
   const params = useParams();
@@ -70,17 +69,7 @@ const ItemScreen = () => {
                 <div className="product__content">
                   <h1 className="title title--h3">{camera.name}</h1>
                   <div className="rate product__rate">
-                    {Array.from({ length: MAX_RATING }, (element, i) =>
-                      i <= camera.rating ? (
-                        <svg key={i} width="17" height="16" aria-hidden="true">
-                          <use xlinkHref="#icon-full-star"></use>
-                        </svg>
-                      ) : (
-                        <svg key={i} width="17" height="16" aria-hidden="true">
-                          <use xlinkHref="#icon-star"></use>
-                        </svg>
-                      ),
-                    )}
+                    <StarRating rating={camera.rating} />
 
                     <p className="visually-hidden">Рейтинг: {camera.rating}</p>
                     <p className="rate__count">
