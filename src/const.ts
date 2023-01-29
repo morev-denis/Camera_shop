@@ -13,3 +13,8 @@ export enum AppRoute {
   Root = '/',
   Camera = '/cameras/:cameraId',
 }
+
+export enum Tab {
+  Description = 'Description',
+  Specification = 'Specification',
+}
