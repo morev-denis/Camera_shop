@@ -1,4 +1,7 @@
 import ReviewCard from '../review-card/review-card';
+import ShowMoreButton from '../show-more-button/show-more-button';
+
+import { useAppSelector } from '../../hooks/useAppSelector';
 
 import { Reviews } from '../../types/reviews';
 
@@ -6,27 +9,31 @@ type Props = {
   reviews: Reviews | null;
 };
 
-const ReviewBlock = ({ reviews }: Props) => (
-  <section className="review-block">
-    <div className="container">
-      <div className="page-content__headed">
-        <h2 className="title title--h3">Отзывы</h2>
-        <button className="btn" type="button">
-          Оставить свой отзыв
-        </button>
+const ReviewBlock = ({ reviews }: Props) => {
+  const { reviewsCount } = useAppSelector((state) => state);
+
+  if (!reviews) {
+    return <div>Нет комментариев</div>;
+  }
+
+  return (
+    <section className="review-block">
+      <div className="container">
+        <div className="page-content__headed">
+          <h2 className="title title--h3">Отзывы</h2>
+          <button className="btn" type="button">
+            Оставить свой отзыв
+          </button>
+        </div>
+        <ul className="review-block__list">
+          {reviews.slice(0, reviewsCount).map((review) => (
+            <ReviewCard key={review.id} review={review} />
+          ))}
+        </ul>
+        {reviews.length - reviewsCount > 0 && <ShowMoreButton />}
       </div>
-      <ul className="review-block__list">
-        {reviews?.map((review) => (
-          <ReviewCard key={review.id} review={review} />
-        ))}
-      </ul>
-      <div className="review-block__buttons">
-        <button className="btn btn--purple" type="button">
-          Показать больше отзывов
-        </button>
-      </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 export default ReviewBlock;

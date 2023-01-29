@@ -16,3 +16,5 @@ export const loadSimilarCameras = createAction('loadSimilarCameras', (value: Cam
 }));
 
 export const loadReviews = createAction('loadReviews', (value: Reviews) => ({ payload: value }));
+
+export const increaseReviewsCount = createAction('increaseReviewsCount');

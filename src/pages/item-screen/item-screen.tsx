@@ -22,6 +22,7 @@ import ReviewBlock from '../../components/review-block/review-block';
 import Footer from '../../components/footer/footer';
 
 import NotFoundScreen from '../not-found-screen/not-found-screen';
+import { AppRoute } from '../../const';
 
 const ItemScreen = () => {
   const params = useParams();
@@ -96,12 +97,12 @@ const ItemScreen = () => {
             {similarCameras && <SimilarCameras similarCameras={similarCameras} />}
           </div>
           <div className="page-content__section">
-            <ReviewBlock reviews={reviews} />
+            {reviews && <ReviewBlock reviews={reviews} />}
           </div>
         </div>
       </main>
 
-      <a className="up-btn" href="#header">
+      <a className="up-btn" href={`${AppRoute.Cameras}/${String(params.cameraId)}#header`}>
         <svg width="12" height="18" aria-hidden="true">
           <use xlinkHref="#icon-arrow2"></use>
         </svg>

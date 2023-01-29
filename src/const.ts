@@ -9,6 +9,8 @@ export enum APIRoute {
 
 export const MAX_RATING = 5;
 
+export const REVIEWS_COUNT = 3;
+
 export enum AppRoute {
   Root = '/',
   Cameras = '/cameras',
