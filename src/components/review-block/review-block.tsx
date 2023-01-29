@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 import ReviewCard from '../review-card/review-card';
 import ShowMoreButton from '../show-more-button/show-more-button';
 
@@ -16,6 +18,10 @@ const ReviewBlock = ({ reviews }: Props) => {
     return <div>Нет комментариев</div>;
   }
 
+  const sortedReviews = [...reviews].sort((a, b) =>
+    dayjs(a.createAt).isAfter(dayjs(b.createAt)) ? -1 : 1,
+  );
+
   return (
     <section className="review-block">
       <div className="container">
@@ -26,11 +32,11 @@ const ReviewBlock = ({ reviews }: Props) => {
           </button>
         </div>
         <ul className="review-block__list">
-          {reviews.slice(0, reviewsCount).map((review) => (
+          {sortedReviews.slice(0, reviewsCount).map((review) => (
             <ReviewCard key={review.id} review={review} />
           ))}
         </ul>
-        {reviews.length - reviewsCount > 0 && <ShowMoreButton />}
+        {sortedReviews.length - reviewsCount > 0 && <ShowMoreButton />}
       </div>
     </section>
   );
