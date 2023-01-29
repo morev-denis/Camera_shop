@@ -1,6 +1,10 @@
+import { Link } from 'react-router-dom';
+
 import StarRating from '../../components/star-rating/star-rating';
 
 import { Camera } from '../../types/camera';
+
+import { AppRoute } from '../../const';
 
 type Props = {
   camera: Camera;
@@ -40,9 +44,9 @@ const Card = ({ camera }: Props) => (
       <button className="btn btn--purple product-card__btn" type="button">
         Купить
       </button>
-      <a className="btn btn--transparent" href="/">
+      <Link to={`${AppRoute.Cameras}/${camera.id}`} className="btn btn--transparent">
         Подробнее{' '}
-      </a>
+      </Link>
     </div>
   </div>
 );
