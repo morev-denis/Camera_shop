@@ -11,6 +11,8 @@ export const MAX_RATING = 5;
 
 export const REVIEWS_COUNT = 3;
 
+export const CONTENT_PER_PAGE = 9;
+
 export enum AppRoute {
   Root = '/',
   Cameras = '/cameras',
