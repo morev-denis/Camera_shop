@@ -3,7 +3,7 @@ import ReactModal from 'react-modal';
 
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 
-import { postReviewAction } from '../../store/api-actions';
+import { postReviewAction, fetchReviewsAction } from '../../store/api-actions';
 
 import { ReviewPost } from '../../types/review-post';
 import { Camera } from '../../types/camera';
@@ -65,7 +65,13 @@ const ProductReviewModal = ({ isReviewModalOpen, setReviewModalOpen, camera }: P
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    onSubmit();
+    onSubmit()
+      .then(() => {
+        dispatch(fetchReviewsAction(camera.id));
+      })
+      .then(() => {
+        closeModal();
+      });
   };
 
   const closeModal = () => {
