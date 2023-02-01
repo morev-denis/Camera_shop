@@ -7,7 +7,7 @@ type Props = {
 const StarRating = ({ rating }: Props) => (
   <>
     {Array.from({ length: MAX_RATING }, (element, i) =>
-      i <= rating ? (
+      i < rating ? (
         <svg key={i} width="17" height="16" aria-hidden="true">
           <use xlinkHref="#icon-full-star"></use>
         </svg>

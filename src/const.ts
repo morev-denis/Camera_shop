@@ -5,6 +5,7 @@ export const REQUEST_TIMEOUT = 5000;
 export enum APIRoute {
   Promo = '/promo',
   Cameras = '/cameras',
+  Reviews = '/reviews',
 }
 
 export const MAX_RATING = 5;

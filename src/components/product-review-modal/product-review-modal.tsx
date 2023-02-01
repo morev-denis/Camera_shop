@@ -1,5 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, useState, ChangeEvent, FormEvent } from 'react';
 import ReactModal from 'react-modal';
+
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+
+import { postReviewAction } from '../../store/api-actions';
+
+import { ReviewPost } from '../../types/review-post';
+import { Camera } from '../../types/camera';
 
 ReactModal.setAppElement('#root');
 ReactModal.defaultStyles = {};
@@ -7,9 +14,60 @@ ReactModal.defaultStyles = {};
 type Props = {
   isReviewModalOpen: boolean;
   setReviewModalOpen: (value: boolean) => void;
+  camera: Camera;
 };
 
-const ProductReviewModal = ({ isReviewModalOpen, setReviewModalOpen }: Props) => {
+const ProductReviewModal = ({ isReviewModalOpen, setReviewModalOpen, camera }: Props) => {
+  const dispatch = useAppDispatch();
+
+  const [formData, setFormData] = useState<ReviewPost>({
+    cameraId: camera.id,
+    userName: '',
+    advantage: '',
+    disadvantage: '',
+    review: '',
+    rating: 1,
+  });
+
+  const handleRatingChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    const value = evt.target.value;
+
+    setFormData({ ...formData, rating: Number(value) });
+  };
+
+  const handleNameChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    const value = evt.target.value;
+
+    setFormData({ ...formData, userName: value });
+  };
+
+  const handleAdvantageChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    const value = evt.target.value;
+
+    setFormData({ ...formData, advantage: value });
+  };
+
+  const handleDisadvantageChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    const value = evt.target.value;
+
+    setFormData({ ...formData, disadvantage: value });
+  };
+
+  const handleReviewChange = (evt: ChangeEvent<HTMLTextAreaElement>) => {
+    const value = evt.target.value;
+
+    setFormData({ ...formData, review: value });
+  };
+
+  const onSubmit = async () => {
+    await dispatch(postReviewAction(formData));
+  };
+
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    onSubmit();
+  };
+
   const closeModal = () => {
     setReviewModalOpen(false);
   };
@@ -36,7 +94,7 @@ const ProductReviewModal = ({ isReviewModalOpen, setReviewModalOpen }: Props) =>
           <div className="modal__content">
             <p className="title title--h4">Оставить отзыв</p>
             <div className="form-review">
-              <form method="post">
+              <form method="post" onSubmit={handleSubmit}>
                 <div className="form-review__rate">
                   <fieldset className="rate form-review__item">
                     <legend className="rate__caption">
@@ -53,6 +111,7 @@ const ProductReviewModal = ({ isReviewModalOpen, setReviewModalOpen }: Props) =>
                           name="rate"
                           type="radio"
                           value="5"
+                          onChange={handleRatingChange}
                         />
                         <label className="rate__label" htmlFor="star-5" title="Отлично"></label>
                         <input
@@ -61,6 +120,7 @@ const ProductReviewModal = ({ isReviewModalOpen, setReviewModalOpen }: Props) =>
                           name="rate"
                           type="radio"
                           value="4"
+                          onChange={handleRatingChange}
                         />
                         <label className="rate__label" htmlFor="star-4" title="Хорошо"></label>
                         <input
@@ -69,6 +129,7 @@ const ProductReviewModal = ({ isReviewModalOpen, setReviewModalOpen }: Props) =>
                           name="rate"
                           type="radio"
                           value="3"
+                          onChange={handleRatingChange}
                         />
                         <label className="rate__label" htmlFor="star-3" title="Нормально"></label>
                         <input
@@ -77,6 +138,7 @@ const ProductReviewModal = ({ isReviewModalOpen, setReviewModalOpen }: Props) =>
                           name="rate"
                           type="radio"
                           value="2"
+                          onChange={handleRatingChange}
                         />
                         <label className="rate__label" htmlFor="star-2" title="Плохо"></label>
                         <input
@@ -85,6 +147,7 @@ const ProductReviewModal = ({ isReviewModalOpen, setReviewModalOpen }: Props) =>
                           name="rate"
                           type="radio"
                           value="1"
+                          onChange={handleRatingChange}
                         />
                         <label className="rate__label" htmlFor="star-1" title="Ужасно"></label>
                       </div>
@@ -103,7 +166,14 @@ const ProductReviewModal = ({ isReviewModalOpen, setReviewModalOpen }: Props) =>
                           <use xlinkHref="#icon-snowflake"></use>
                         </svg>
                       </span>
-                      <input type="text" name="user-name" placeholder="Введите ваше имя" required />
+                      <input
+                        type="text"
+                        name="user-name"
+                        placeholder="Введите ваше имя"
+                        required
+                        value={formData.userName}
+                        onChange={handleNameChange}
+                      />
                     </label>
                     <p className="custom-input__error">Нужно указать имя</p>
                   </div>
@@ -120,6 +190,8 @@ const ProductReviewModal = ({ isReviewModalOpen, setReviewModalOpen }: Props) =>
                         name="user-plus"
                         placeholder="Основные преимущества товара"
                         required
+                        value={formData.advantage}
+                        onChange={handleAdvantageChange}
                       />
                     </label>
                     <p className="custom-input__error">Нужно указать достоинства</p>
@@ -137,6 +209,8 @@ const ProductReviewModal = ({ isReviewModalOpen, setReviewModalOpen }: Props) =>
                         name="user-minus"
                         placeholder="Главные недостатки товара"
                         required
+                        value={formData.disadvantage}
+                        onChange={handleDisadvantageChange}
                       />
                     </label>
                     <p className="custom-input__error">Нужно указать недостатки</p>
@@ -153,6 +227,8 @@ const ProductReviewModal = ({ isReviewModalOpen, setReviewModalOpen }: Props) =>
                         name="user-comment"
                         minLength={5}
                         placeholder="Поделитесь своим опытом покупки"
+                        value={formData.review}
+                        onChange={handleReviewChange}
                       >
                       </textarea>
                     </label>
@@ -164,7 +240,12 @@ const ProductReviewModal = ({ isReviewModalOpen, setReviewModalOpen }: Props) =>
                 </button>
               </form>
             </div>
-            <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={closeModal}>
+            <button
+              className="cross-btn"
+              type="button"
+              aria-label="Закрыть попап"
+              onClick={closeModal}
+            >
               <svg width="10" height="10" aria-hidden="true">
                 <use xlinkHref="#icon-close"></use>
               </svg>

@@ -8,12 +8,14 @@ import ShowMoreButton from '../show-more-button/show-more-button';
 import { useAppSelector } from '../../hooks/useAppSelector';
 
 import { Reviews } from '../../types/reviews';
+import { Camera } from '../../types/camera';
 
 type Props = {
   reviews: Reviews | null;
+  camera: Camera;
 };
 
-const ReviewBlock = ({ reviews }: Props) => {
+const ReviewBlock = ({ reviews, camera }: Props) => {
   const { reviewsCount } = useAppSelector((state) => state);
 
   const [isReviewModalOpen, setReviewModalOpen] = useState(false);
@@ -52,6 +54,7 @@ const ReviewBlock = ({ reviews }: Props) => {
         <ProductReviewModal
           isReviewModalOpen={isReviewModalOpen}
           setReviewModalOpen={setReviewModalOpen}
+          camera={camera}
         />
       )}
     </>

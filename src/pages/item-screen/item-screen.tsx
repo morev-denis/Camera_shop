@@ -103,7 +103,7 @@ const ItemScreen = () => {
             {similarCameras && <SimilarCameras similarCameras={similarCameras} />}
           </div>
           <div className="page-content__section">
-            {reviews && <ReviewBlock reviews={reviews} />}
+            {reviews && <ReviewBlock reviews={reviews} camera={camera} />}
           </div>
         </div>
       </main>

@@ -1,7 +1,14 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { loadPromo, loadCameras, loadCamera, loadReviews, loadSimilarCameras } from './action';
+import {
+  loadPromo,
+  loadCameras,
+  loadCamera,
+  loadReviews,
+  loadSimilarCameras,
+  postReview,
+} from './action';
 
 import { APIRoute } from '../const';
 
@@ -10,6 +17,7 @@ import { Promo } from '../types/promo';
 import { Cameras } from '../types/cameras';
 import { Camera } from '../types/camera';
 import { Reviews } from '../types/reviews';
+import { ReviewPost } from '../types/review-post';
 
 export const fetchPromoAction = createAsyncThunk<
   void,
@@ -55,3 +63,25 @@ export const fetchReviewsAction = createAsyncThunk<
   const { data } = await api.get<Reviews>(`${APIRoute.Cameras}/${cameraId}/reviews`);
   dispatch(loadReviews(data));
 });
+
+export const postReviewAction = createAsyncThunk<
+  void,
+  ReviewPost,
+  { dispatch: AppDispatch; state: State; extra: AxiosInstance }
+>(
+  'postReview',
+  async (
+    { userName, advantage, disadvantage, review, rating, cameraId },
+    { dispatch, extra: api },
+  ) => {
+    await api.post<ReviewPost>(APIRoute.Reviews, {
+      userName,
+      advantage,
+      disadvantage,
+      review,
+      rating,
+      cameraId,
+    });
+    dispatch(postReview());
+  },
+);
