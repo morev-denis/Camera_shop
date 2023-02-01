@@ -13,6 +13,8 @@ export const REVIEWS_COUNT = 3;
 
 export const CONTENT_PER_PAGE = 9;
 
+export const SIMILAR_CAMERAS_PER_PAGE = 3;
+
 export enum AppRoute {
   Root = '/',
   Cameras = '/cameras',
