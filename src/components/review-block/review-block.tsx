@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import dayjs from 'dayjs';
 
+import ProductReviewModal from '../product-review-modal/product-review-modal';
 import ReviewCard from '../review-card/review-card';
 import ShowMoreButton from '../show-more-button/show-more-button';
 
@@ -14,6 +16,8 @@ type Props = {
 const ReviewBlock = ({ reviews }: Props) => {
   const { reviewsCount } = useAppSelector((state) => state);
 
+  const [isReviewModalOpen, setReviewModalOpen] = useState(false);
+
   if (!reviews) {
     return <div>Нет комментариев</div>;
   }
@@ -22,23 +26,35 @@ const ReviewBlock = ({ reviews }: Props) => {
     dayjs(a.createAt).isAfter(dayjs(b.createAt)) ? -1 : 1,
   );
 
+  const handleReviewBtnClick = () => {
+    setReviewModalOpen(true);
+  };
+
   return (
-    <section className="review-block">
-      <div className="container">
-        <div className="page-content__headed">
-          <h2 className="title title--h3">Отзывы</h2>
-          <button className="btn" type="button">
-            Оставить свой отзыв
-          </button>
+    <>
+      <section className="review-block">
+        <div className="container">
+          <div className="page-content__headed">
+            <h2 className="title title--h3">Отзывы</h2>
+            <button className="btn" type="button" onClick={handleReviewBtnClick}>
+              Оставить свой отзыв
+            </button>
+          </div>
+          <ul className="review-block__list">
+            {sortedReviews.slice(0, reviewsCount).map((review) => (
+              <ReviewCard key={review.id} review={review} />
+            ))}
+          </ul>
+          {sortedReviews.length - reviewsCount > 0 && <ShowMoreButton />}
         </div>
-        <ul className="review-block__list">
-          {sortedReviews.slice(0, reviewsCount).map((review) => (
-            <ReviewCard key={review.id} review={review} />
-          ))}
-        </ul>
-        {sortedReviews.length - reviewsCount > 0 && <ShowMoreButton />}
-      </div>
-    </section>
+      </section>
+      {isReviewModalOpen && (
+        <ProductReviewModal
+          isReviewModalOpen={isReviewModalOpen}
+          setReviewModalOpen={setReviewModalOpen}
+        />
+      )}
+    </>
   );
 };
 
