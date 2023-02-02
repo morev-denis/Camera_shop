@@ -19,7 +19,7 @@ const CatalogScreen = () => (
     <main>
       <Banner />
       <div className="page-content">
-        <Breadcrumbs />
+        <Breadcrumbs camera={null} />
         <Catalog />
       </div>
     </main>

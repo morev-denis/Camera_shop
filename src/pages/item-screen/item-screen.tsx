@@ -47,14 +47,14 @@ const ItemScreen = () => {
   return (
     <>
       <Helmet>
-        <title>Продукт - Фотошоп</title>
+        <title>{`${camera.name} - Фотошоп`}</title>
       </Helmet>
 
       <Header />
 
       <main>
         <div className="page-content">
-          <Breadcrumbs />
+          <Breadcrumbs camera={camera} />
           <div className="page-content__section">
             <section className="product">
               <div className="container">
