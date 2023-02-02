@@ -2,6 +2,7 @@ import { useState } from 'react';
 import dayjs from 'dayjs';
 
 import ProductReviewModal from '../product-review-modal/product-review-modal';
+import ProductReviewSuccessModal from '../product-review-success-modal/product-review-success-modal';
 import ReviewCard from '../review-card/review-card';
 import ShowMoreButton from '../show-more-button/show-more-button';
 
@@ -19,6 +20,7 @@ const ReviewBlock = ({ reviews, camera }: Props) => {
   const { reviewsCount } = useAppSelector((state) => state);
 
   const [isReviewModalOpen, setReviewModalOpen] = useState(false);
+  const [isReviewSuccessModalOpen, setReviewSuccessModalOpen] = useState(false);
 
   if (!reviews) {
     return <div>Нет комментариев</div>;
@@ -54,7 +56,14 @@ const ReviewBlock = ({ reviews, camera }: Props) => {
         <ProductReviewModal
           isReviewModalOpen={isReviewModalOpen}
           setReviewModalOpen={setReviewModalOpen}
+          setReviewSuccessModalOpen={setReviewSuccessModalOpen}
           camera={camera}
+        />
+      )}
+      {isReviewSuccessModalOpen && (
+        <ProductReviewSuccessModal
+          isReviewSuccessModalOpen={isReviewSuccessModalOpen}
+          setReviewSuccessModalOpen={setReviewSuccessModalOpen}
         />
       )}
     </>

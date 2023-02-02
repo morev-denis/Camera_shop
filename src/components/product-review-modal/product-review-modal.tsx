@@ -14,10 +14,16 @@ ReactModal.defaultStyles = {};
 type Props = {
   isReviewModalOpen: boolean;
   setReviewModalOpen: (value: boolean) => void;
+  setReviewSuccessModalOpen: (value: boolean) => void;
   camera: Camera;
 };
 
-const ProductReviewModal = ({ isReviewModalOpen, setReviewModalOpen, camera }: Props) => {
+const ProductReviewModal = ({
+  isReviewModalOpen,
+  setReviewModalOpen,
+  setReviewSuccessModalOpen,
+  camera,
+}: Props) => {
   const dispatch = useAppDispatch();
 
   const [formData, setFormData] = useState<ReviewPost>({
@@ -71,6 +77,9 @@ const ProductReviewModal = ({ isReviewModalOpen, setReviewModalOpen, camera }: P
       })
       .then(() => {
         closeModal();
+      })
+      .then(() => {
+        setReviewSuccessModalOpen(true);
       });
   };
 
