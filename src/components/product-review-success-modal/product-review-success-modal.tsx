@@ -1,6 +1,9 @@
 import { useCallback, useEffect } from 'react';
 import ReactModal from 'react-modal';
 
+ReactModal.setAppElement('#root');
+ReactModal.defaultStyles = {};
+
 type Props = {
   isReviewSuccessModalOpen: boolean;
   setReviewSuccessModalOpen: (value: boolean) => void;
@@ -45,7 +48,7 @@ const ProductReviewSuccessModal = ({
     <ReactModal isOpen={isReviewSuccessModalOpen}>
       <div className="modal is-active modal--narrow">
         <div className="modal__wrapper">
-          <div className="modal__overlay"></div>
+          <div className="modal__overlay" onClick={closeModal}></div>
           <div className="modal__content">
             <p className="title title--h4">Спасибо за отзыв</p>
             <svg className="modal__icon" width="80" height="78" aria-hidden="true">

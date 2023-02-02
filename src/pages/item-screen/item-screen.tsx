@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useAppDispatch } from '../../hooks/useAppDispatch';
@@ -20,6 +20,7 @@ import StarRating from '../../components/star-rating/star-rating';
 import Tabs from '../../components/tabs/tabs';
 import SimilarCameras from '../../components/similar-cameras/similar-cameras';
 import ReviewBlock from '../../components/review-block/review-block';
+import CatalogAddItemModal from '../../components/catalog-add-item-modal/catalog-add-item-modal';
 
 import Footer from '../../components/footer/footer';
 
@@ -31,6 +32,12 @@ const ItemScreen = () => {
   const dispatch = useAppDispatch();
 
   const { camera, reviews, similarCameras } = useAppSelector((state) => state);
+
+  const [isCatalogAddItemModalOpen, setCatalogAddItemModalOpen] = useState(false);
+
+  const handleAddBasketBtnClick = () => {
+    setCatalogAddItemModalOpen(true);
+  };
 
   useEffect(() => {
     if (params.cameraId) {
@@ -88,7 +95,11 @@ const ItemScreen = () => {
                     <span className="visually-hidden">Цена:</span>
                     {camera.price.toLocaleString('ru-Ru')} ₽
                   </p>
-                  <button className="btn btn--purple" type="button">
+                  <button
+                    className="btn btn--purple"
+                    type="button"
+                    onClick={handleAddBasketBtnClick}
+                  >
                     <svg width="24" height="16" aria-hidden="true">
                       <use xlinkHref="#icon-add-basket"></use>
                     </svg>
@@ -115,6 +126,14 @@ const ItemScreen = () => {
       </a>
 
       <Footer />
+
+      {isCatalogAddItemModalOpen && (
+        <CatalogAddItemModal
+          isCatalogAddItemModalOpen={isCatalogAddItemModalOpen}
+          setCatalogAddItemModalOpen={setCatalogAddItemModalOpen}
+          camera={camera}
+        />
+      )}
     </>
   );
 };
