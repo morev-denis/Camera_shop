@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import ReactModal from 'react-modal';
 
 type Props = {
@@ -10,15 +10,18 @@ const ProductReviewSuccessModal = ({
   isReviewSuccessModalOpen,
   setReviewSuccessModalOpen,
 }: Props) => {
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setReviewSuccessModalOpen(false);
-  };
+  }, [setReviewSuccessModalOpen]);
 
-  const handleEscClick = (evt: KeyboardEvent) => {
-    if (evt.key === 'Escape') {
-      closeModal();
-    }
-  };
+  const handleEscClick = useCallback(
+    (evt: KeyboardEvent) => {
+      if (evt.key === 'Escape') {
+        closeModal();
+      }
+    },
+    [closeModal],
+  );
 
   useEffect(() => {
     document.addEventListener('keyup', handleEscClick);
@@ -26,7 +29,17 @@ const ProductReviewSuccessModal = ({
     return () => {
       document.removeEventListener('keyup', handleEscClick);
     };
-  });
+  }, [handleEscClick]);
+
+  useEffect(() => {
+    if (isReviewSuccessModalOpen) {
+      document.body.style.overflow = 'hidden';
+    }
+
+    return () => {
+      document.body.style.overflow = 'visible';
+    };
+  }, [isReviewSuccessModalOpen]);
 
   return (
     <ReactModal isOpen={isReviewSuccessModalOpen}>

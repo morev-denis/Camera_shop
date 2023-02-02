@@ -1,4 +1,4 @@
-import { useEffect, useState, ChangeEvent, FormEvent } from 'react';
+import { useEffect, useState, ChangeEvent, FormEvent, useCallback } from 'react';
 import ReactModal from 'react-modal';
 
 import { useAppDispatch } from '../../hooks/useAppDispatch';
@@ -83,15 +83,18 @@ const ProductReviewModal = ({
       });
   };
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setReviewModalOpen(false);
-  };
+  }, [setReviewModalOpen]);
 
-  const handleEscClick = (evt: KeyboardEvent) => {
-    if (evt.key === 'Escape') {
-      closeModal();
-    }
-  };
+  const handleEscClick = useCallback(
+    (evt: KeyboardEvent) => {
+      if (evt.key === 'Escape') {
+        closeModal();
+      }
+    },
+    [closeModal],
+  );
 
   useEffect(() => {
     document.addEventListener('keyup', handleEscClick);
@@ -99,7 +102,17 @@ const ProductReviewModal = ({
     return () => {
       document.removeEventListener('keyup', handleEscClick);
     };
-  });
+  }, [handleEscClick]);
+
+  useEffect(() => {
+    if (isReviewModalOpen) {
+      document.body.style.overflow = 'hidden';
+    }
+
+    return () => {
+      document.body.style.overflow = 'visible';
+    };
+  }, [isReviewModalOpen]);
 
   return (
     <ReactModal isOpen={isReviewModalOpen}>
