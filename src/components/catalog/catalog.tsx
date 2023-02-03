@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/useAppSelector';
 
 import usePagination from '../../hooks/usePagination';
@@ -10,6 +12,8 @@ import Pagination from '../../components/pagination/pagination';
 import { CONTENT_PER_PAGE } from '../../const';
 
 const Catalog = () => {
+  const params = useParams();
+
   const { cameras } = useAppSelector((state) => state);
 
   const { totalPages, firstContentIndex, lastContentIndex, nextPage, prevPage, page, setPage } =
@@ -17,6 +21,10 @@ const Catalog = () => {
       contentPerPage: CONTENT_PER_PAGE,
       count: cameras ? cameras.length : 0,
     });
+
+  useEffect(() => {
+    setPage(Number(params.pageNumber));
+  });
 
   if (!cameras) {
     return (

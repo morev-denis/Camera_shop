@@ -18,6 +18,7 @@ export const SIMILAR_CAMERAS_PER_PAGE = 3;
 
 export enum AppRoute {
   Root = '/',
+  Catalog = '/catalog/page_:pageNumber',
   Cameras = '/cameras',
   Camera = '/cameras/:cameraId',
 }
