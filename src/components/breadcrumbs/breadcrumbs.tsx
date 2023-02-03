@@ -23,7 +23,7 @@ const Breadcrumbs = ({ camera }: Props) => (
           <NavLink
             className={({ isActive }) =>
               isActive ? 'breadcrumbs__link breadcrumbs__link--active' : 'breadcrumbs__link'}
-            to={AppRoute.Catalog}
+            to={AppRoute.Root}
             end
           >
             Каталог
