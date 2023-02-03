@@ -1,4 +1,8 @@
+import { Link } from 'react-router-dom';
+
 import { useAppSelector } from '../../hooks/useAppSelector';
+
+import { AppRoute } from '../../const';
 
 const Banner = () => {
   const { promo } = useAppSelector((state) => state);
@@ -22,9 +26,9 @@ const Banner = () => {
           <span className="banner__text">
             Профессиональная камера от&nbsp;известного производителя
           </span>
-          <a className="btn" href="/">
+          <Link className="btn" to={`${AppRoute.Cameras}/${promo.id}`}>
             Подробнее
-          </a>
+          </Link>
         </p>
       </div>
     );
