@@ -1,5 +1,6 @@
-import { useEffect, useState, ChangeEvent, FormEvent, useCallback } from 'react';
+import { useEffect, useState, FormEvent, useCallback, Fragment } from 'react';
 import ReactModal from 'react-modal';
+import { useForm } from 'react-hook-form';
 
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 
@@ -7,6 +8,8 @@ import { postReviewAction, fetchReviewsAction } from '../../store/api-actions';
 
 import { ReviewPost } from '../../types/review-post';
 import { Camera } from '../../types/camera';
+
+import { MAX_RATING, RatingName } from '../../const';
 
 ReactModal.setAppElement('#root');
 ReactModal.defaultStyles = {};
@@ -26,52 +29,22 @@ const ProductReviewModal = ({
 }: Props) => {
   const dispatch = useAppDispatch();
 
-  const [formData, setFormData] = useState<ReviewPost>({
-    cameraId: camera.id,
-    userName: '',
-    advantage: '',
-    disadvantage: '',
-    review: '',
-    rating: 1,
-  });
+  const [rating, setRating] = useState(0);
 
-  const handleRatingChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    const value = evt.target.value;
+  const {
+    register,
+    formState: { errors, isValid },
+    handleSubmit,
+  } = useForm<ReviewPost>({ mode: 'all' });
 
-    setFormData({ ...formData, rating: Number(value) });
-  };
+  const submitHandler = handleSubmit((reviewPost) => {
+    const formData = {
+      ...reviewPost,
+      cameraId: camera.id,
+      rating: Number(reviewPost.rating),
+    };
 
-  const handleNameChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    const value = evt.target.value;
-
-    setFormData({ ...formData, userName: value });
-  };
-
-  const handleAdvantageChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    const value = evt.target.value;
-
-    setFormData({ ...formData, advantage: value });
-  };
-
-  const handleDisadvantageChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    const value = evt.target.value;
-
-    setFormData({ ...formData, disadvantage: value });
-  };
-
-  const handleReviewChange = (evt: ChangeEvent<HTMLTextAreaElement>) => {
-    const value = evt.target.value;
-
-    setFormData({ ...formData, review: value });
-  };
-
-  const onSubmit = async () => {
-    await dispatch(postReviewAction(formData));
-  };
-
-  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
-    onSubmit()
+    dispatch(postReviewAction(formData))
       .then(() => {
         dispatch(fetchReviewsAction(camera.id));
       })
@@ -81,6 +54,12 @@ const ProductReviewModal = ({
       .then(() => {
         setReviewSuccessModalOpen(true);
       });
+  });
+
+  const onSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+
+    submitHandler(evt);
   };
 
   const closeModal = useCallback(() => {
@@ -122,8 +101,10 @@ const ProductReviewModal = ({
           <div className="modal__content">
             <p className="title title--h4">Оставить отзыв</p>
             <div className="form-review">
-              <form method="post" onSubmit={handleSubmit}>
-                <div className="form-review__rate">
+              <form method="post" onSubmit={onSubmit}>
+                <div
+                  className={errors?.rating ? 'form-review__rate is-invalid' : 'form-review__rate'}
+                >
                   <fieldset className="rate form-review__item">
                     <legend className="rate__caption">
                       Рейтинг
@@ -133,60 +114,39 @@ const ProductReviewModal = ({
                     </legend>
                     <div className="rate__bar">
                       <div className="rate__group">
-                        <input
-                          className="visually-hidden"
-                          id="star-5"
-                          name="rate"
-                          type="radio"
-                          value="5"
-                          onChange={handleRatingChange}
-                        />
-                        <label className="rate__label" htmlFor="star-5" title="Отлично"></label>
-                        <input
-                          className="visually-hidden"
-                          id="star-4"
-                          name="rate"
-                          type="radio"
-                          value="4"
-                          onChange={handleRatingChange}
-                        />
-                        <label className="rate__label" htmlFor="star-4" title="Хорошо"></label>
-                        <input
-                          className="visually-hidden"
-                          id="star-3"
-                          name="rate"
-                          type="radio"
-                          value="3"
-                          onChange={handleRatingChange}
-                        />
-                        <label className="rate__label" htmlFor="star-3" title="Нормально"></label>
-                        <input
-                          className="visually-hidden"
-                          id="star-2"
-                          name="rate"
-                          type="radio"
-                          value="2"
-                          onChange={handleRatingChange}
-                        />
-                        <label className="rate__label" htmlFor="star-2" title="Плохо"></label>
-                        <input
-                          className="visually-hidden"
-                          id="star-1"
-                          name="rate"
-                          type="radio"
-                          value="1"
-                          onChange={handleRatingChange}
-                        />
-                        <label className="rate__label" htmlFor="star-1" title="Ужасно"></label>
+                        {Array.from({ length: MAX_RATING }, (element, i) => (
+                          <Fragment key={`star-${i + 1}`}>
+                            <input
+                              className="visually-hidden"
+                              id={`star-${MAX_RATING - i}`}
+                              type="radio"
+                              {...register('rating', { required: true })}
+                              value={MAX_RATING - i}
+                              onChange={() => setRating(MAX_RATING - i)}
+                            />
+                            <label
+                              className="rate__label"
+                              htmlFor={`star-${MAX_RATING - i}`}
+                              title={RatingName[MAX_RATING - i]}
+                            >
+                            </label>
+                          </Fragment>
+                        ))}
                       </div>
                       <div className="rate__progress">
-                        <span className="rate__stars">0</span> <span>/</span>
+                        <span className="rate__stars">{rating}</span> <span>/</span>
                         <span className="rate__all-stars">5</span>
                       </div>
                     </div>
                     <p className="rate__message">Нужно оценить товар</p>
                   </fieldset>
-                  <div className="custom-input form-review__item">
+                  <div
+                    className={
+                      errors?.userName
+                        ? 'custom-input form-review__item is-invalid'
+                        : 'custom-input form-review__item'
+                    }
+                  >
                     <label>
                       <span className="custom-input__label">
                         Ваше имя
@@ -196,16 +156,19 @@ const ProductReviewModal = ({
                       </span>
                       <input
                         type="text"
-                        name="user-name"
                         placeholder="Введите ваше имя"
-                        required
-                        value={formData.userName}
-                        onChange={handleNameChange}
+                        {...register('userName', { required: true })}
                       />
                     </label>
                     <p className="custom-input__error">Нужно указать имя</p>
                   </div>
-                  <div className="custom-input form-review__item">
+                  <div
+                    className={
+                      errors?.advantage
+                        ? 'custom-input form-review__item is-invalid'
+                        : 'custom-input form-review__item'
+                    }
+                  >
                     <label>
                       <span className="custom-input__label">
                         Достоинства
@@ -215,16 +178,19 @@ const ProductReviewModal = ({
                       </span>
                       <input
                         type="text"
-                        name="user-plus"
                         placeholder="Основные преимущества товара"
-                        required
-                        value={formData.advantage}
-                        onChange={handleAdvantageChange}
+                        {...register('advantage', { required: true })}
                       />
                     </label>
                     <p className="custom-input__error">Нужно указать достоинства</p>
                   </div>
-                  <div className="custom-input form-review__item">
+                  <div
+                    className={
+                      errors?.disadvantage
+                        ? 'custom-input form-review__item is-invalid'
+                        : 'custom-input form-review__item'
+                    }
+                  >
                     <label>
                       <span className="custom-input__label">
                         Недостатки
@@ -234,16 +200,19 @@ const ProductReviewModal = ({
                       </span>
                       <input
                         type="text"
-                        name="user-minus"
                         placeholder="Главные недостатки товара"
-                        required
-                        value={formData.disadvantage}
-                        onChange={handleDisadvantageChange}
+                        {...register('disadvantage', { required: true })}
                       />
                     </label>
                     <p className="custom-input__error">Нужно указать недостатки</p>
                   </div>
-                  <div className="custom-textarea form-review__item">
+                  <div
+                    className={
+                      errors?.review
+                        ? 'custom-textarea form-review__item is-invalid'
+                        : 'custom-textarea form-review__item'
+                    }
+                  >
                     <label>
                       <span className="custom-textarea__label">
                         Комментарий
@@ -252,18 +221,25 @@ const ProductReviewModal = ({
                         </svg>
                       </span>
                       <textarea
-                        name="user-comment"
-                        minLength={5}
                         placeholder="Поделитесь своим опытом покупки"
-                        value={formData.review}
-                        onChange={handleReviewChange}
+                        {...register('review', {
+                          required: 'Нужно добавить комментарий',
+                          minLength: { value: 5, message: 'Минимум 5 символов' },
+                        })}
                       >
                       </textarea>
                     </label>
-                    <div className="custom-textarea__error">Нужно добавить комментарий</div>
+
+                    {errors?.review && (
+                      <div className="custom-textarea__error">{String(errors.review.message)}</div>
+                    )}
                   </div>
                 </div>
-                <button className="btn btn--purple form-review__btn" type="submit">
+                <button
+                  className="btn btn--purple form-review__btn"
+                  type="submit"
+                  disabled={!isValid}
+                >
                   Отправить отзыв
                 </button>
               </form>

@@ -27,3 +27,11 @@ export enum Tab {
   Description = 'Description',
   Specification = 'Specification',
 }
+
+export const RatingName: { [key: number]: string } = {
+  1: 'Ужасно',
+  2: 'Плохо',
+  3: 'Нормально',
+  4: 'Хорошо',
+  5: 'Отлично',
+} as const;
