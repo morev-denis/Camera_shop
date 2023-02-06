@@ -9,21 +9,9 @@ import {
   increaseReviewsCount,
 } from './action';
 
-import { Promo } from '../types/promo';
-import { Cameras } from '../types/cameras';
-import { Camera } from '../types/camera';
-import { Reviews } from '../types/reviews';
+import { InitialState } from '../types/initial-state';
 
 import { REVIEWS_COUNT } from '../const';
-
-type InitialState = {
-  promo: Promo | null;
-  cameras: Cameras | null;
-  camera: Camera | null;
-  reviews: Reviews | null;
-  similarCameras: Cameras | null;
-  reviewsCount: number;
-};
 
 const initialState: InitialState = {
   promo: null,
