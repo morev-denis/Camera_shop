@@ -2,16 +2,6 @@ import { reducer } from './reducer';
 
 import { REVIEWS_COUNT } from '../const';
 
-import { increaseReviewsCount } from './action';
-
-import {
-  fetchCamerasAction,
-  fetchCameraAction,
-  fetchPromoAction,
-  fetchSimilarCamerasAction,
-  fetchReviewsAction,
-} from './api-actions';
-
 import {
   makeFakeCamera,
   makeFakeCameras,
@@ -43,44 +33,42 @@ describe('Reducer', () => {
   });
 
   it('should increase reviews count', () => {
-    expect(reducer(initialState, { type: increaseReviewsCount })).toEqual({
+    expect(reducer(initialState, { type: 'increaseReviewsCount' })).toEqual({
       ...initialState,
       reviewsCount: initialState.reviewsCount + REVIEWS_COUNT,
     });
   });
 
   it('should update camera by load camera', () => {
-    expect(reducer(initialState, { type: fetchCameraAction, payload: camera })).toEqual({
+    expect(reducer(initialState, { type: 'loadCamera', payload: camera })).toEqual({
       ...initialState,
       camera,
     });
   });
 
   it('should update cameras by load cameras', () => {
-    expect(reducer(initialState, { type: fetchCamerasAction, payload: cameras })).toEqual({
+    expect(reducer(initialState, { type: 'loadCameras', payload: cameras })).toEqual({
       ...initialState,
       cameras,
     });
   });
 
   it('should update promo by load promo', () => {
-    expect(reducer(initialState, { type: fetchPromoAction, payload: promo })).toEqual({
+    expect(reducer(initialState, { type: 'loadPromo', payload: promo })).toEqual({
       ...initialState,
       promo,
     });
   });
 
   it('should update similar cameras by load similar cameras', () => {
-    expect(
-      reducer(initialState, { type: fetchSimilarCamerasAction, payload: similarCameras }),
-    ).toEqual({
+    expect(reducer(initialState, { type: 'loadSimilarCameras', payload: similarCameras })).toEqual({
       ...initialState,
       similarCameras,
     });
   });
 
   it('should update review by load reviews', () => {
-    expect(reducer(initialState, { type: fetchReviewsAction, payload: reviews })).toEqual({
+    expect(reducer(initialState, { type: 'loadReviews', payload: reviews })).toEqual({
       ...initialState,
       reviews,
     });
