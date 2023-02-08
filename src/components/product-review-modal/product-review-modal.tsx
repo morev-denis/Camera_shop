@@ -11,7 +11,6 @@ import { Camera } from '../../types/camera';
 
 import { MAX_RATING, RatingName } from '../../const';
 
-ReactModal.setAppElement('#root');
 ReactModal.defaultStyles = {};
 
 type Props = {

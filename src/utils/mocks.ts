@@ -1,3 +1,5 @@
+import thunk from 'redux-thunk';
+import { configureMockStore } from '@jedmao/redux-mock-store';
 import { name, datatype, internet, commerce } from 'faker';
 
 import { Camera } from '../types/camera';
@@ -5,6 +7,8 @@ import { Cameras } from '../types/cameras';
 import { Review } from '../types/review';
 import { Reviews } from '../types/reviews';
 import { Promo } from '../types/promo';
+
+import { REVIEWS_COUNT } from '../const';
 
 export const makeFakeCamera = (): Camera => ({
   id: datatype.number(1000),
@@ -51,3 +55,22 @@ export const makeFakeReview = (): Review => ({
 
 export const makeFakeReviews = (): Reviews =>
   Array.from({ length: 20 }, (element, i) => makeFakeReview());
+
+const middlewares = [thunk];
+
+const promo = makeFakePromo();
+const camera = makeFakeCamera();
+const cameras = makeFakeCameras();
+const reviews = makeFakeReviews();
+const similarCameras = makeFakeSimilarCameras();
+
+const mockStore = configureMockStore(middlewares);
+
+export const store = mockStore({
+  promo: promo,
+  cameras: cameras,
+  camera: camera,
+  reviews: reviews,
+  similarCameras: similarCameras,
+  reviewsCount: REVIEWS_COUNT,
+});
