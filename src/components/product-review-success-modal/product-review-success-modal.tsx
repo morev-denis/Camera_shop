@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import ReactModal from 'react-modal';
 
+ReactModal.setAppElement('#root');
 ReactModal.defaultStyles = {};
 
 type Props = {

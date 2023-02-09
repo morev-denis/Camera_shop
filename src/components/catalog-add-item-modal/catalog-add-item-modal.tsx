@@ -2,6 +2,7 @@ import { useCallback, useEffect } from 'react';
 import ReactModal from 'react-modal';
 import { Camera } from '../../types/camera';
 
+ReactModal.setAppElement('#root');
 ReactModal.defaultStyles = {};
 
 type Props = {
