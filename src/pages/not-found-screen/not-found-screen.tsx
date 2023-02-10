@@ -7,6 +7,8 @@ import Footer from '../../components/footer/footer';
 
 import { AppRoute } from '../../const';
 
+import styles from './not-found-screen.module.css';
+
 const NotFoundScreen = () => (
   <>
     <Helmet>
@@ -15,7 +17,7 @@ const NotFoundScreen = () => (
 
     <Header />
 
-    <main style={{ textAlign: 'center' }}>
+    <main className={styles.main}>
       <h1>404. Страница не найдена</h1>
       <Link to={AppRoute.Root}>Вернуться на главную</Link>
     </main>

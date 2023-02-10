@@ -4,6 +4,8 @@ import { useAppSelector } from '../../hooks/useAppSelector';
 
 import { AppRoute } from '../../const';
 
+import styles from './banner.module.css';
+
 const Banner = () => {
   const { promo } = useAppSelector((state) => state);
 
@@ -34,7 +36,7 @@ const Banner = () => {
     );
   } else {
     return (
-      <div style={{ textAlign: 'center', color: 'red' }}>Произошла ошибка при загрузке баннера</div>
+      <div className={styles.error}>Произошла ошибка при загрузке баннера</div>
     );
   }
 };

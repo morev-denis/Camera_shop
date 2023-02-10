@@ -11,6 +11,8 @@ import Pagination from '../../components/pagination/pagination';
 
 import { CONTENT_PER_PAGE } from '../../const';
 
+import styles from './catalog.module.css';
+
 const Catalog = () => {
   const params = useParams();
 
@@ -27,11 +29,7 @@ const Catalog = () => {
   });
 
   if (!cameras) {
-    return (
-      <div style={{ textAlign: 'center', color: 'red' }}>
-        Произошла ошибка при загрузке данных камер
-      </div>
-    );
+    return <div className={styles.error}>Произошла ошибка при загрузке данных камер</div>;
   }
 
   return (
