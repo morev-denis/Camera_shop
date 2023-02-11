@@ -11,7 +11,6 @@ import { Camera } from '../../types/camera';
 
 import { MAX_RATING, RatingName } from '../../const';
 
-ReactModal.setAppElement('#root');
 ReactModal.defaultStyles = {};
 
 type Props = {
@@ -94,7 +93,7 @@ const ProductReviewModal = ({
   }, [isReviewModalOpen]);
 
   return (
-    <ReactModal isOpen={isReviewModalOpen}>
+    <ReactModal isOpen={isReviewModalOpen} ariaHideApp={false}>
       <div className="modal is-active">
         <div className="modal__wrapper">
           <div className="modal__overlay" onClick={closeModal}></div>

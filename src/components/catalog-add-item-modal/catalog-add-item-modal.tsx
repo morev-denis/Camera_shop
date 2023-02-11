@@ -2,7 +2,6 @@ import { useCallback, useEffect } from 'react';
 import ReactModal from 'react-modal';
 import { Camera } from '../../types/camera';
 
-ReactModal.setAppElement('#root');
 ReactModal.defaultStyles = {};
 
 type Props = {
@@ -48,7 +47,7 @@ const CatalogAddItemModal = ({
   }, [isCatalogAddItemModalOpen]);
 
   return (
-    <ReactModal isOpen={isCatalogAddItemModalOpen}>
+    <ReactModal isOpen={isCatalogAddItemModalOpen} ariaHideApp={false}>
       <div className="modal is-active">
         <div className="modal__wrapper">
           <div className="modal__overlay" onClick={closeModal}></div>

@@ -7,7 +7,7 @@ type Props = {
 };
 
 const Cards = ({ cameras }: Props) => (
-  <div className="cards catalog__cards">
+  <div className="cards catalog__cards" data-testid="catalog__cards">
     {cameras.map((camera) => (
       <Card key={camera.id} camera={camera} />
     ))}

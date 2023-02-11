@@ -1,7 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import ReactModal from 'react-modal';
 
-ReactModal.setAppElement('#root');
 ReactModal.defaultStyles = {};
 
 type Props = {
@@ -45,7 +44,7 @@ const ProductReviewSuccessModal = ({
   }, [isReviewSuccessModalOpen]);
 
   return (
-    <ReactModal isOpen={isReviewSuccessModalOpen}>
+    <ReactModal isOpen={isReviewSuccessModalOpen} ariaHideApp={false}>
       <div className="modal is-active modal--narrow">
         <div className="modal__wrapper">
           <div className="modal__overlay" onClick={closeModal}></div>

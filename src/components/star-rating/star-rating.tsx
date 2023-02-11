@@ -8,11 +8,11 @@ const StarRating = ({ rating }: Props) => (
   <>
     {Array.from({ length: MAX_RATING }, (element, i) =>
       i < rating ? (
-        <svg key={i} width="17" height="16" aria-hidden="true">
+        <svg key={i} width="17" height="16" aria-hidden="true" data-testid={`icon-${i}`}>
           <use xlinkHref="#icon-full-star"></use>
         </svg>
       ) : (
-        <svg key={i} width="17" height="16" aria-hidden="true">
+        <svg key={i} width="17" height="16" aria-hidden="true" data-testid={`icon-${i}`}>
           <use xlinkHref="#icon-star"></use>
         </svg>
       ),

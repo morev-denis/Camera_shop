@@ -40,7 +40,7 @@ const Catalog = () => {
           <div className="catalog__aside">
             <CatalogFilter />
           </div>
-          <div className="catalog__content">
+          <div className="catalog__content" data-testid="catalog__sort">
             <CatalogSort />
             <Cards cameras={cameras.slice(firstContentIndex, lastContentIndex)} />
             <Pagination
