@@ -13,10 +13,13 @@ const Banner = () => {
     return (
       <div className="banner">
         <picture>
-          <source type="image/webp" srcSet={`${promo.previewImgWebp}, ${promo.previewImgWebp2x}`} />
+          <source
+            type="image/webp"
+            srcSet={`${process.env.PUBLIC_URL}/${promo.previewImgWebp}, ${process.env.PUBLIC_URL}/${promo.previewImgWebp2x}`}
+          />
           <img
-            src={promo.previewImg}
-            srcSet={promo.previewImg2x}
+            src={`${process.env.PUBLIC_URL}/${promo.previewImg}`}
+            srcSet={`${process.env.PUBLIC_URL}/{promo.previewImg2x}`}
             width="1280"
             height="280"
             alt="баннер"
@@ -35,9 +38,7 @@ const Banner = () => {
       </div>
     );
   } else {
-    return (
-      <div className={styles.error}>Произошла ошибка при загрузке баннера</div>
-    );
+    return <div className={styles.error}>Произошла ошибка при загрузке баннера</div>;
   }
 };
 

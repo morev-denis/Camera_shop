@@ -58,11 +58,11 @@ const CatalogAddItemModal = ({
                 <picture>
                   <source
                     type="image/webp"
-                    srcSet={`${camera.previewImgWebp}, ${camera.previewImgWebp2x}`}
+                    srcSet={`${process.env.PUBLIC_URL}/${camera.previewImgWebp}, ${process.env.PUBLIC_URL}/${camera.previewImgWebp2x}`}
                   />
                   <img
-                    src={camera.previewImg}
-                    srcSet={camera.previewImg2x}
+                    src={`${process.env.PUBLIC_URL}/${camera.previewImg}`}
+                    srcSet={`${process.env.PUBLIC_URL}/${camera.previewImg2x}`}
                     width="140"
                     height="120"
                     alt={camera.name}
