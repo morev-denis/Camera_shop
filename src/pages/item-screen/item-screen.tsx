@@ -25,7 +25,6 @@ import CatalogAddItemModal from '../../components/catalog-add-item-modal/catalog
 import Footer from '../../components/footer/footer';
 
 import NotFoundScreen from '../not-found-screen/not-found-screen';
-import { AppRoute } from '../../const';
 
 const ItemScreen = () => {
   const params = useParams();
@@ -119,11 +118,11 @@ const ItemScreen = () => {
         </div>
       </main>
 
-      <a className="up-btn" href={`${AppRoute.Cameras}/${String(params.cameraId)}#header`}>
+      <button className="up-btn" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
         <svg width="12" height="18" aria-hidden="true">
           <use xlinkHref="#icon-arrow2"></use>
         </svg>
-      </a>
+      </button>
 
       <Footer />
 
