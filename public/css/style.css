@@ -629,6 +629,7 @@ button,
 
 .page-content {
   padding-bottom: 80px;
+  text-align: start;
 }
 
 .page-content .title--h2 {
@@ -3058,6 +3059,7 @@ button,
 
 .product__tabs-text p {
   margin: 0 0 10px;
+  text-align: start;
 }
 
 .product__tabs-text p:last-child {
