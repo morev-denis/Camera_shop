@@ -9,6 +9,8 @@ export const loadPromo = createAction('loadPromo', (value: Promo) => ({ payload:
 
 export const loadCameras = createAction('loadCameras', (value: Cameras) => ({ payload: value }));
 
+export const loadSortedCameras = createAction('loadSortedCameras', (value: Cameras) => ({ payload: value }));
+
 export const loadCamera = createAction('loadCamera', (value: Camera) => ({ payload: value }));
 
 export const loadSimilarCameras = createAction('loadSimilarCameras', (value: Cameras) => ({

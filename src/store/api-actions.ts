@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import {
   loadPromo,
   loadCameras,
+  loadSortedCameras,
   loadCamera,
   loadReviews,
   loadSimilarCameras,
@@ -42,6 +43,22 @@ export const fetchCamerasAction = createAsyncThunk<
   try {
     const { data } = await api.get<Cameras>(APIRoute.Cameras);
     dispatch(loadCameras(data));
+  } catch (error) {
+    toast.error('Не удалось загрузить данные камер. Попробуйте позже');
+    throw error;
+  }
+});
+
+export const fetchSortedCamerasAction = createAsyncThunk<
+  void,
+  { _sort: string; _order: string },
+  { dispatch: AppDispatch; state: State; extra: AxiosInstance }
+>('fetchSortedCameras', async (sortType, { dispatch, extra: api }) => {
+  try {
+    const { data } = await api.get<Cameras>(
+      `${APIRoute.Cameras}?_sort=${sortType._sort}&_order=${sortType._order}`,
+    );
+    dispatch(loadSortedCameras(data));
   } catch (error) {
     toast.error('Не удалось загрузить данные камер. Попробуйте позже');
     throw error;

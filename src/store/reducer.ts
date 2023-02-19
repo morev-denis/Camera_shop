@@ -7,6 +7,7 @@ import {
   loadReviews,
   loadSimilarCameras,
   increaseReviewsCount,
+  loadSortedCameras,
 } from './action';
 
 import { InitialState } from '../types/initial-state';
@@ -41,6 +42,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(increaseReviewsCount, (state) => {
       state.reviewsCount += REVIEWS_COUNT;
+    })
+    .addCase(loadSortedCameras, (state, action) => {
+      state.cameras = action.payload;
     });
 });
 

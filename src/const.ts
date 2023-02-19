@@ -35,3 +35,18 @@ export const RatingName: { [key: number]: string } = {
   4: 'Хорошо',
   5: 'Отлично',
 } as const;
+
+export const SortType = {
+  Price: 'price',
+  Rating: 'rating',
+} as const;
+
+export const OrderType = {
+  Asc: 'asc',
+  Desc: 'desc',
+} as const;
+
+export const QueryParam = {
+  Sort: '_sort',
+  Order: '_order',
+} as const;
