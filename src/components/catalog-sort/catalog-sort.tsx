@@ -1,53 +1,39 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { useAppSelector } from '../../hooks/useAppSelector';
 
 import { fetchSortedCamerasAction } from '../../store/api-actions';
+import { updateQueryParams } from '../../store/action';
 
-import { SortType, OrderType, QueryParam } from '../../const';
+import { SortType, OrderType } from '../../const';
 
 const CatalogSort = () => {
   const dispatch = useAppDispatch();
-
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const [sortParams, setSortParams] = useState<{ _sort: string; _order: string }>({
-    _sort: searchParams.get(QueryParam.Sort) || '',
-    _order: searchParams.get(QueryParam.Order) || '',
-  });
+  const { queryParams } = useAppSelector((state) => state);
+  const [, setSearchParams] = useSearchParams();
 
   const handleSortByPriceBtnClick = () => {
-    setSortParams((state) => ({ ...state, _sort: SortType.Price }));
-    setSearchParams(sortParams);
+    dispatch(updateQueryParams({ _sort: 'price' }));
   };
 
   const handleSortByPopularBtnClick = () => {
-    setSortParams((state) => ({ ...state, _sort: SortType.Rating }));
-    setSearchParams(sortParams);
+    dispatch(updateQueryParams({ _sort: 'rating' }));
   };
 
   const handleSortOrderUpBtnClick = () => {
-    if (!sortParams._sort) {
-      setSortParams((state) => ({ ...state, _sort: SortType.Price }));
-      setSearchParams({ _sort: SortType.Price, _order: OrderType.Asc });
-    }
-    setSortParams((state) => ({ ...state, _order: OrderType.Asc }));
-    setSearchParams({ _sort: SortType.Price, _order: OrderType.Asc });
+    dispatch(updateQueryParams({ _order: 'asc' }));
   };
 
   const handleSortOrderDownBtnClick = () => {
-    if (!sortParams._sort) {
-      setSortParams((state) => ({ ...state, _sort: SortType.Price }));
-      setSearchParams({ _sort: SortType.Price, _order: OrderType.Desc });
-    }
-    setSortParams((state) => ({ ...state, _order: OrderType.Desc }));
-    setSearchParams({ _sort: SortType.Price, _order: OrderType.Desc });
+    dispatch(updateQueryParams({ _order: 'desc' }));
   };
 
   useEffect(() => {
-    dispatch(fetchSortedCamerasAction(sortParams));
-  }, [dispatch, sortParams]);
+    setSearchParams(queryParams);
+    dispatch(fetchSortedCamerasAction(queryParams));
+  }, [dispatch, queryParams]);
 
   return (
     <div className="catalog-sort">
@@ -60,7 +46,7 @@ const CatalogSort = () => {
                 type="radio"
                 id="sortPrice"
                 name="sort"
-                defaultChecked={sortParams._sort === SortType.Price}
+                defaultChecked={queryParams._sort === SortType.Price}
               />
               <label htmlFor="sortPrice">по цене</label>
             </div>
@@ -69,7 +55,7 @@ const CatalogSort = () => {
                 type="radio"
                 id="sortPopular"
                 name="sort"
-                defaultChecked={sortParams._sort === SortType.Rating}
+                defaultChecked={queryParams._sort === SortType.Rating}
               />
               <label htmlFor="sortPopular">по популярности</label>
             </div>
@@ -82,7 +68,7 @@ const CatalogSort = () => {
                 name="sort-icon"
                 aria-label="По возрастанию"
                 onClick={handleSortOrderUpBtnClick}
-                defaultChecked={sortParams._order === OrderType.Asc}
+                defaultChecked={queryParams._order === OrderType.Asc}
               />
               <label htmlFor="up">
                 <svg width="16" height="14" aria-hidden="true">
@@ -97,7 +83,7 @@ const CatalogSort = () => {
                 name="sort-icon"
                 aria-label="По убыванию"
                 onClick={handleSortOrderDownBtnClick}
-                defaultChecked={sortParams._order === OrderType.Desc}
+                defaultChecked={queryParams._order === OrderType.Desc}
               />
               <label htmlFor="down">
                 <svg width="16" height="14" aria-hidden="true">

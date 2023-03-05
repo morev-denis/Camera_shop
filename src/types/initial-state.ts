@@ -10,4 +10,8 @@ export type InitialState = {
   reviews: Reviews | null;
   similarCameras: Cameras | null;
   reviewsCount: number;
+  queryParams: {
+    _sort: string;
+    _order: string;
+  };
 };

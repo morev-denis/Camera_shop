@@ -9,13 +9,22 @@ export const loadPromo = createAction('loadPromo', (value: Promo) => ({ payload:
 
 export const loadCameras = createAction('loadCameras', (value: Cameras) => ({ payload: value }));
 
-export const loadSortedCameras = createAction('loadSortedCameras', (value: Cameras) => ({ payload: value }));
+export const loadSortedCameras = createAction('loadSortedCameras', (value: Cameras) => ({
+  payload: value,
+}));
 
 export const loadCamera = createAction('loadCamera', (value: Camera) => ({ payload: value }));
 
 export const loadSimilarCameras = createAction('loadSimilarCameras', (value: Cameras) => ({
   payload: value,
 }));
+
+export const updateQueryParams = createAction(
+  'updateQueryParams',
+  (value: { _sort?: string; _order?: string }) => ({
+    payload: value,
+  }),
+);
 
 export const loadReviews = createAction('loadReviews', (value: Reviews) => ({ payload: value }));
 

@@ -8,6 +8,7 @@ import {
   loadSimilarCameras,
   increaseReviewsCount,
   loadSortedCameras,
+  updateQueryParams,
 } from './action';
 
 import { InitialState } from '../types/initial-state';
@@ -21,6 +22,10 @@ const initialState: InitialState = {
   reviews: null,
   similarCameras: null,
   reviewsCount: REVIEWS_COUNT,
+  queryParams: {
+    _sort: '',
+    _order: '',
+  },
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -45,6 +50,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(loadSortedCameras, (state, action) => {
       state.cameras = action.payload;
+    })
+    .addCase(updateQueryParams, (state, action) => {
+      state.queryParams = { ...state.queryParams, ...action.payload };
     });
 });
 

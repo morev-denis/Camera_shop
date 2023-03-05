@@ -25,6 +25,10 @@ const initialState: InitialState = {
   reviews: null,
   similarCameras: null,
   reviewsCount: REVIEWS_COUNT,
+  queryParams: {
+    _sort: '',
+    _order: '',
+  },
 };
 
 describe('Reducer', () => {
