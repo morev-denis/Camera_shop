@@ -51,7 +51,13 @@ export const fetchCamerasAction = createAsyncThunk<
 
 export const fetchSortedCamerasAction = createAsyncThunk<
   void,
-  { _sort: string | null; _order: string | null },
+  {
+    _sort: string | null;
+    _order: string | null;
+    category: string[] | null;
+    type: string[] | null;
+    level: string[] | null;
+  },
   { dispatch: AppDispatch; state: State; extra: AxiosInstance }
 >('fetchSortedCameras', async (paramsSort, { dispatch, extra: api }) => {
   try {
@@ -59,6 +65,9 @@ export const fetchSortedCamerasAction = createAsyncThunk<
       params: {
         _sort: paramsSort._sort,
         _order: paramsSort._order,
+        category: paramsSort.category,
+        type: paramsSort.type,
+        level: paramsSort.level,
       },
     });
     dispatch(loadSortedCameras(data));

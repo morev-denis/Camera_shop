@@ -6,12 +6,12 @@ import { useAppDispatch } from '../../hooks/useAppDispatch';
 import usePagination from '../../hooks/usePagination';
 
 import Cards from '../../components/cards/cards';
+import CatalogFilter from '../catalog-filter/catalog-filter';
 import Pagination from '../../components/pagination/pagination';
 
-// import { updateQueryParams } from '../../store/action';
 import { fetchSortedCamerasAction } from '../../store/api-actions';
 
-import { CONTENT_PER_PAGE, SortType, OrderType } from '../../const';
+import { CONTENT_PER_PAGE, SortType, OrderType, QueryParam } from '../../const';
 
 import styles from './catalog.module.css';
 
@@ -24,29 +24,32 @@ const Catalog = () => {
 
   const paramsSort = useMemo(
     () => ({
-      _sort: searchParams.get('_sort'),
-      _order: searchParams.get('_order'),
+      _sort: searchParams.get(QueryParam.Sort),
+      _order: searchParams.get(QueryParam.Order),
+      category: searchParams.getAll(QueryParam.Category),
+      type: searchParams.getAll(QueryParam.Type),
+      level: searchParams.getAll(QueryParam.Level),
     }),
     [searchParams],
   );
 
-  if (searchParams.has('_sort') && !searchParams.has('_order')) {
-    searchParams.set('_order', 'asc');
+  if (searchParams.has(QueryParam.Sort) && !searchParams.has(QueryParam.Order)) {
+    searchParams.set(QueryParam.Order, OrderType.Asc);
     setSearchParams(searchParams);
   }
 
-  if (searchParams.has('_order') && !searchParams.has('_sort')) {
-    searchParams.set('_sort', 'price');
+  if (searchParams.has(QueryParam.Order) && !searchParams.has(QueryParam.Sort)) {
+    searchParams.set(QueryParam.Sort, SortType.Price);
   }
 
   const handleSortChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    searchParams.set('_sort', String(evt.target.dataset.sort));
+    searchParams.set(QueryParam.Sort, String(evt.target.dataset.sort));
 
     setSearchParams(searchParams);
   };
 
   const handleOrderChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    searchParams.set('_order', String(evt.target.dataset.order));
+    searchParams.set(QueryParam.Order, String(evt.target.dataset.order));
 
     setSearchParams(searchParams);
   };
@@ -75,101 +78,7 @@ const Catalog = () => {
         <h1 className="title title--h2">Каталог фото- и видеотехники</h1>
         <div className="page-content__columns">
           <div className="catalog__aside">
-            <div className="catalog-filter">
-              <form action="#">
-                <h2 className="visually-hidden">Фильтр</h2>
-                <fieldset className="catalog-filter__block">
-                  <legend className="title title--h5">Цена, ₽</legend>
-                  <div className="catalog-filter__price-range">
-                    <div className="custom-input">
-                      <label>
-                        <input type="number" name="price" placeholder="от" />
-                      </label>
-                    </div>
-                    <div className="custom-input">
-                      <label>
-                        <input type="number" name="priceUp" placeholder="до" />
-                      </label>
-                    </div>
-                  </div>
-                </fieldset>
-                <fieldset className="catalog-filter__block">
-                  <legend className="title title--h5">Категория</legend>
-                  <div className="custom-checkbox catalog-filter__item">
-                    <label>
-                      <input type="checkbox" name="photocamera" />
-                      <span className="custom-checkbox__icon"></span>
-                      <span className="custom-checkbox__label">Фотокамера</span>
-                    </label>
-                  </div>
-                  <div className="custom-checkbox catalog-filter__item">
-                    <label>
-                      <input type="checkbox" name="videocamera" />
-                      <span className="custom-checkbox__icon"></span>
-                      <span className="custom-checkbox__label">Видеокамера</span>
-                    </label>
-                  </div>
-                </fieldset>
-                <fieldset className="catalog-filter__block">
-                  <legend className="title title--h5">Тип камеры</legend>
-                  <div className="custom-checkbox catalog-filter__item">
-                    <label>
-                      <input type="checkbox" name="digital" />
-                      <span className="custom-checkbox__icon"></span>
-                      <span className="custom-checkbox__label">Цифровая</span>
-                    </label>
-                  </div>
-                  <div className="custom-checkbox catalog-filter__item">
-                    <label>
-                      <input type="checkbox" name="film" disabled />
-                      <span className="custom-checkbox__icon"></span>
-                      <span className="custom-checkbox__label">Плёночная</span>
-                    </label>
-                  </div>
-                  <div className="custom-checkbox catalog-filter__item">
-                    <label>
-                      <input type="checkbox" name="snapshot" />
-                      <span className="custom-checkbox__icon"></span>
-                      <span className="custom-checkbox__label">Моментальная</span>
-                    </label>
-                  </div>
-                  <div className="custom-checkbox catalog-filter__item">
-                    <label>
-                      <input type="checkbox" name="collection" disabled />
-                      <span className="custom-checkbox__icon"></span>
-                      <span className="custom-checkbox__label">Коллекционная</span>
-                    </label>
-                  </div>
-                </fieldset>
-                <fieldset className="catalog-filter__block">
-                  <legend className="title title--h5">Уровень</legend>
-                  <div className="custom-checkbox catalog-filter__item">
-                    <label>
-                      <input type="checkbox" name="zero" />
-                      <span className="custom-checkbox__icon"></span>
-                      <span className="custom-checkbox__label">Нулевой</span>
-                    </label>
-                  </div>
-                  <div className="custom-checkbox catalog-filter__item">
-                    <label>
-                      <input type="checkbox" name="non-professional" />
-                      <span className="custom-checkbox__icon"></span>
-                      <span className="custom-checkbox__label">Любительский</span>
-                    </label>
-                  </div>
-                  <div className="custom-checkbox catalog-filter__item">
-                    <label>
-                      <input type="checkbox" name="professional" />
-                      <span className="custom-checkbox__icon"></span>
-                      <span className="custom-checkbox__label">Профессиональный</span>
-                    </label>
-                  </div>
-                </fieldset>
-                <button className="btn catalog-filter__reset-btn" type="reset">
-                  Сбросить фильтры
-                </button>
-              </form>
-            </div>
+            <CatalogFilter />
           </div>
           <div className="catalog__content" data-testid="catalog__sort">
             <div className="catalog-sort">
@@ -181,9 +90,9 @@ const Catalog = () => {
                       <input
                         type="radio"
                         id="sortPrice"
-                        name="_sort"
+                        name={QueryParam.Sort}
                         defaultChecked={queryParams._sort === SortType.Price}
-                        data-sort="price"
+                        data-sort={SortType.Price}
                         onChange={handleSortChange}
                       />
                       <label htmlFor="sortPrice">по цене</label>
@@ -192,9 +101,9 @@ const Catalog = () => {
                       <input
                         type="radio"
                         id="sortPopular"
-                        name="_sort"
+                        name={QueryParam.Sort}
                         defaultChecked={queryParams._sort === SortType.Rating}
-                        data-sort="rating"
+                        data-sort={SortType.Rating}
                         onChange={handleSortChange}
                       />
                       <label htmlFor="sortPopular">по популярности</label>
@@ -208,7 +117,7 @@ const Catalog = () => {
                         name="sort-icon"
                         aria-label="По возрастанию"
                         defaultChecked={queryParams._order === OrderType.Asc}
-                        data-order="asc"
+                        data-order={OrderType.Asc}
                         onChange={handleOrderChange}
                       />
                       <label htmlFor="up">
@@ -224,7 +133,7 @@ const Catalog = () => {
                         name="sort-icon"
                         aria-label="По убыванию"
                         defaultChecked={queryParams._order === OrderType.Desc}
-                        data-order="desc"
+                        data-order={OrderType.Desc}
                         onChange={handleOrderChange}
                       />
                       <label htmlFor="down">

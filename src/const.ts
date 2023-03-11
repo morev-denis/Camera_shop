@@ -49,4 +49,7 @@ export const OrderType = {
 export const QueryParam = {
   Sort: '_sort',
   Order: '_order',
+  Category: 'category',
+  Type: 'type',
+  Level: 'level',
 } as const;
