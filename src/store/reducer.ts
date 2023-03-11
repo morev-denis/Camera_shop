@@ -8,7 +8,6 @@ import {
   loadSimilarCameras,
   increaseReviewsCount,
   loadSortedCameras,
-  updateQueryParams,
 } from './action';
 
 import { InitialState } from '../types/initial-state';
@@ -50,9 +49,6 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(loadSortedCameras, (state, action) => {
       state.cameras = action.payload;
-    })
-    .addCase(updateQueryParams, (state, action) => {
-      state.queryParams = { ...state.queryParams, ...action.payload };
     });
 });
 

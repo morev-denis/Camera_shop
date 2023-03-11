@@ -51,13 +51,16 @@ export const fetchCamerasAction = createAsyncThunk<
 
 export const fetchSortedCamerasAction = createAsyncThunk<
   void,
-  { _sort: string; _order: string },
+  { _sort: string | null; _order: string | null },
   { dispatch: AppDispatch; state: State; extra: AxiosInstance }
->('fetchSortedCameras', async (sortType, { dispatch, extra: api }) => {
+>('fetchSortedCameras', async (paramsSort, { dispatch, extra: api }) => {
   try {
-    const { data } = await api.get<Cameras>(
-      `${APIRoute.Cameras}?_sort=${sortType._sort}&_order=${sortType._order}`,
-    );
+    const { data } = await api.get<Cameras>(APIRoute.Cameras, {
+      params: {
+        _sort: paramsSort._sort,
+        _order: paramsSort._order,
+      },
+    });
     dispatch(loadSortedCameras(data));
   } catch (error) {
     toast.error('Не удалось загрузить данные камер. Попробуйте позже');

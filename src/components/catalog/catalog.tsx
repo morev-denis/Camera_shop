@@ -1,15 +1,14 @@
-import { useEffect } from 'react';
+import { ChangeEvent, useEffect, useMemo } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/useAppSelector';
 
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import usePagination from '../../hooks/usePagination';
 
-// import CatalogSort from '../../components/catalog-sort/catalog-sort';
 import Cards from '../../components/cards/cards';
 import Pagination from '../../components/pagination/pagination';
 
-import { updateQueryParams } from '../../store/action';
+// import { updateQueryParams } from '../../store/action';
 import { fetchSortedCamerasAction } from '../../store/api-actions';
 
 import { CONTENT_PER_PAGE, SortType, OrderType } from '../../const';
@@ -21,22 +20,35 @@ const Catalog = () => {
   const params = useParams();
 
   const { cameras, queryParams } = useAppSelector((state) => state);
-  const [, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const handleSortByPriceBtnClick = () => {
-    dispatch(updateQueryParams({ _sort: 'price' }));
+  const paramsSort = useMemo(
+    () => ({
+      _sort: searchParams.get('_sort'),
+      _order: searchParams.get('_order'),
+    }),
+    [searchParams],
+  );
+
+  if (searchParams.has('_sort') && !searchParams.has('_order')) {
+    searchParams.set('_order', 'asc');
+    setSearchParams(searchParams);
+  }
+
+  if (searchParams.has('_order') && !searchParams.has('_sort')) {
+    searchParams.set('_sort', 'price');
+  }
+
+  const handleSortChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    searchParams.set('_sort', String(evt.target.dataset.sort));
+
+    setSearchParams(searchParams);
   };
 
-  const handleSortByPopularBtnClick = () => {
-    dispatch(updateQueryParams({ _sort: 'rating' }));
-  };
+  const handleOrderChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    searchParams.set('_order', String(evt.target.dataset.order));
 
-  const handleSortOrderUpBtnClick = () => {
-    dispatch(updateQueryParams({ _order: 'asc' }));
-  };
-
-  const handleSortOrderDownBtnClick = () => {
-    dispatch(updateQueryParams({ _order: 'desc' }));
+    setSearchParams(searchParams);
   };
 
   const { totalPages, firstContentIndex, lastContentIndex, nextPage, prevPage, page, setPage } =
@@ -50,9 +62,8 @@ const Catalog = () => {
   });
 
   useEffect(() => {
-    setSearchParams(queryParams);
-    dispatch(fetchSortedCamerasAction(queryParams));
-  }, [dispatch, queryParams]);
+    dispatch(fetchSortedCamerasAction(paramsSort));
+  }, [dispatch, paramsSort]);
 
   if (!cameras) {
     return <div className={styles.error}>Произошла ошибка при загрузке данных камер</div>;
@@ -166,21 +177,25 @@ const Catalog = () => {
                 <div className="catalog-sort__inner">
                   <p className="title title--h5">Сортировать:</p>
                   <div className="catalog-sort__type">
-                    <div className="catalog-sort__btn-text" onClick={handleSortByPriceBtnClick}>
+                    <div className="catalog-sort__btn-text">
                       <input
                         type="radio"
                         id="sortPrice"
-                        name="sort"
+                        name="_sort"
                         defaultChecked={queryParams._sort === SortType.Price}
+                        data-sort="price"
+                        onChange={handleSortChange}
                       />
                       <label htmlFor="sortPrice">по цене</label>
                     </div>
-                    <div className="catalog-sort__btn-text" onClick={handleSortByPopularBtnClick}>
+                    <div className="catalog-sort__btn-text">
                       <input
                         type="radio"
                         id="sortPopular"
-                        name="sort"
+                        name="_sort"
                         defaultChecked={queryParams._sort === SortType.Rating}
+                        data-sort="rating"
+                        onChange={handleSortChange}
                       />
                       <label htmlFor="sortPopular">по популярности</label>
                     </div>
@@ -192,8 +207,9 @@ const Catalog = () => {
                         id="up"
                         name="sort-icon"
                         aria-label="По возрастанию"
-                        onClick={handleSortOrderUpBtnClick}
                         defaultChecked={queryParams._order === OrderType.Asc}
+                        data-order="asc"
+                        onChange={handleOrderChange}
                       />
                       <label htmlFor="up">
                         <svg width="16" height="14" aria-hidden="true">
@@ -207,8 +223,9 @@ const Catalog = () => {
                         id="down"
                         name="sort-icon"
                         aria-label="По убыванию"
-                        onClick={handleSortOrderDownBtnClick}
                         defaultChecked={queryParams._order === OrderType.Desc}
+                        data-order="desc"
+                        onChange={handleOrderChange}
                       />
                       <label htmlFor="down">
                         <svg width="16" height="14" aria-hidden="true">

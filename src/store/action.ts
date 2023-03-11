@@ -19,13 +19,6 @@ export const loadSimilarCameras = createAction('loadSimilarCameras', (value: Cam
   payload: value,
 }));
 
-export const updateQueryParams = createAction(
-  'updateQueryParams',
-  (value: { _sort?: string; _order?: string }) => ({
-    payload: value,
-  }),
-);
-
 export const loadReviews = createAction('loadReviews', (value: Reviews) => ({ payload: value }));
 
 export const postReview = createAction('postReview');
