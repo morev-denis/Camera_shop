@@ -52,4 +52,7 @@ export const QueryParam = {
   Category: 'category',
   Type: 'type',
   Level: 'level',
+  Limit: 'limit',
+  MinPrice: 'price_gte',
+  MaxPrice: 'price_lte',
 } as const;

@@ -19,6 +19,28 @@ export const loadSimilarCameras = createAction('loadSimilarCameras', (value: Cam
   payload: value,
 }));
 
+export const getMinPriceOfCameras = createAction('getMinPriceOfCameras', (value: number) => ({
+  payload: value,
+}));
+
+export const getMaxPriceOfCameras = createAction('getMaxPriceOfCameras', (value: number) => ({
+  payload: value,
+}));
+
+export const getMinPriceOfCamerasFiltered = createAction(
+  'getMinPriceOfCamerasFiltered',
+  (value: number) => ({
+    payload: value,
+  }),
+);
+
+export const getMaxPriceOfCamerasFiltered = createAction(
+  'getMaxPriceOfCamerasFiltered',
+  (value: number) => ({
+    payload: value,
+  }),
+);
+
 export const loadReviews = createAction('loadReviews', (value: Reviews) => ({ payload: value }));
 
 export const postReview = createAction('postReview');

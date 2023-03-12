@@ -29,6 +29,10 @@ const initialState: InitialState = {
     _sort: '',
     _order: '',
   },
+  minPrice: 0,
+  maxPrice: 0,
+  minPriceFiltered: 0,
+  maxPriceFiltered: 0,
 };
 
 describe('Reducer', () => {

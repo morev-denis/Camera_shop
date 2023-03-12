@@ -10,9 +10,13 @@ import {
   loadReviews,
   loadSimilarCameras,
   postReview,
+  getMinPriceOfCameras,
+  getMaxPriceOfCameras,
+  getMinPriceOfCamerasFiltered,
+  getMaxPriceOfCamerasFiltered,
 } from './action';
 
-import { APIRoute } from '../const';
+import { APIRoute, QueryParam, OrderType, SortType } from '../const';
 
 import { AppDispatch, State } from '../types/store';
 import { Promo } from '../types/promo';
@@ -103,6 +107,114 @@ export const fetchSimilarCamerasAction = createAsyncThunk<
     toast.error('Не удалось загрузить данные похожи камер. Попробуйте позже');
     throw error;
   }
+});
+
+export const fetchCamerasMinPrice = createAsyncThunk<
+  void,
+  undefined,
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>('data/fetchCamerasOfMinPrice', async (_arg, { dispatch, extra: api }) => {
+  const res = await api.get<Cameras>(APIRoute.Cameras, {
+    params: {
+      [QueryParam.Order]: OrderType.Asc,
+      [QueryParam.Sort]: SortType.Price,
+      [QueryParam.Limit]: 1,
+    },
+  });
+
+  dispatch(getMinPriceOfCameras(res.data[0].price));
+});
+
+export const fetchCamerasMaxPrice = createAsyncThunk<
+  void,
+  undefined,
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>('data/fetchCamerasOfnMaxPrice', async (_arg, { dispatch, extra: api }) => {
+  const res = await api.get<Cameras>(APIRoute.Cameras, {
+    params: {
+      [QueryParam.Order]: OrderType.Desc,
+      [QueryParam.Sort]: SortType.Price,
+      [QueryParam.Limit]: 1,
+    },
+  });
+
+  dispatch(getMaxPriceOfCameras(res.data[0].price));
+});
+
+export const fetchCamerasMinPriceFiltered = createAsyncThunk<
+  void,
+  {
+    params: {
+      category: string[];
+      type: string[];
+      level: string[];
+      minPrice: string | null;
+      maxPrice: string | null;
+    };
+  },
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>('data/fetchCamerasOfMinPriceFiltered', async ({ params }, { dispatch, extra: api }) => {
+  const res = await api.get<Cameras>(APIRoute.Cameras, {
+    params: {
+      [QueryParam.Order]: OrderType.Asc,
+      [QueryParam.Sort]: SortType.Price,
+      [QueryParam.Category]: params.category,
+      [QueryParam.Type]: params.type,
+      [QueryParam.Level]: params.level,
+      [QueryParam.MinPrice]: params.minPrice,
+      [QueryParam.MaxPrice]: params.maxPrice,
+      [QueryParam.Limit]: 1,
+    },
+  });
+
+  dispatch(loadCameras(res.data));
+  dispatch(getMinPriceOfCamerasFiltered(res.data[0].price));
+});
+
+export const fetchCamerasMaxPriceFiltered = createAsyncThunk<
+  void,
+  {
+    params: {
+      category: string[];
+      type: string[];
+      level: string[];
+      minPrice: string | null;
+      maxPrice: string | null;
+    };
+  },
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>('data/fetchCamerasOfMaxPriceFiltered', async ({ params }, { dispatch, extra: api }) => {
+  const res = await api.get<Cameras>(APIRoute.Cameras, {
+    params: {
+      [QueryParam.Order]: OrderType.Desc,
+      [QueryParam.Sort]: SortType.Price,
+      [QueryParam.Category]: params.category,
+      [QueryParam.Type]: params.type,
+      [QueryParam.Level]: params.level,
+      [QueryParam.MinPrice]: params.minPrice,
+      [QueryParam.MaxPrice]: params.maxPrice,
+      [QueryParam.Limit]: 1,
+    },
+  });
+
+  dispatch(loadCameras(res.data));
+  dispatch(getMaxPriceOfCamerasFiltered(res.data[0].price));
 });
 
 export const fetchReviewsAction = createAsyncThunk<

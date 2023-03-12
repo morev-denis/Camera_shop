@@ -14,4 +14,8 @@ export type InitialState = {
     _sort: string;
     _order: string;
   };
+  minPrice: number;
+  maxPrice: number;
+  minPriceFiltered: number;
+  maxPriceFiltered: number;
 };

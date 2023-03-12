@@ -9,7 +9,13 @@ import Cards from '../../components/cards/cards';
 import CatalogFilter from '../catalog-filter/catalog-filter';
 import Pagination from '../../components/pagination/pagination';
 
-import { fetchSortedCamerasAction } from '../../store/api-actions';
+import {
+  fetchSortedCamerasAction,
+  fetchCamerasMinPrice,
+  fetchCamerasMaxPrice,
+  fetchCamerasMinPriceFiltered,
+  fetchCamerasMaxPriceFiltered,
+} from '../../store/api-actions';
 
 import { CONTENT_PER_PAGE, SortType, OrderType, QueryParam } from '../../const';
 
@@ -29,6 +35,8 @@ const Catalog = () => {
       category: searchParams.getAll(QueryParam.Category),
       type: searchParams.getAll(QueryParam.Type),
       level: searchParams.getAll(QueryParam.Level),
+      minPrice: searchParams.get(QueryParam.MinPrice),
+      maxPrice: searchParams.get(QueryParam.MaxPrice),
     }),
     [searchParams],
   );
@@ -67,6 +75,44 @@ const Catalog = () => {
   useEffect(() => {
     dispatch(fetchSortedCamerasAction(paramsSort));
   }, [dispatch, paramsSort]);
+
+  useEffect(() => {
+    dispatch(fetchCamerasMinPrice());
+    dispatch(fetchCamerasMaxPrice());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(
+      fetchCamerasMinPriceFiltered({
+        params: {
+          category: paramsSort.category,
+          type: paramsSort.type,
+          level: paramsSort.level,
+          minPrice: paramsSort.minPrice,
+          maxPrice: paramsSort.maxPrice,
+        },
+      }),
+    );
+
+    dispatch(
+      fetchCamerasMaxPriceFiltered({
+        params: {
+          category: paramsSort.category,
+          type: paramsSort.type,
+          level: paramsSort.level,
+          minPrice: paramsSort.minPrice,
+          maxPrice: paramsSort.maxPrice,
+        },
+      }),
+    );
+  }, [
+    dispatch,
+    paramsSort.category.join(','),
+    paramsSort.level.join(','),
+    paramsSort.type.join(','),
+    paramsSort.minPrice,
+    paramsSort.maxPrice,
+  ]);
 
   if (!cameras) {
     return <div className={styles.error}>Произошла ошибка при загрузке данных камер</div>;

@@ -8,6 +8,10 @@ import {
   loadSimilarCameras,
   increaseReviewsCount,
   loadSortedCameras,
+  getMinPriceOfCameras,
+  getMaxPriceOfCameras,
+  getMinPriceOfCamerasFiltered,
+  getMaxPriceOfCamerasFiltered,
 } from './action';
 
 import { InitialState } from '../types/initial-state';
@@ -25,6 +29,10 @@ const initialState: InitialState = {
     _sort: '',
     _order: '',
   },
+  minPrice: 0,
+  maxPrice: 0,
+  minPriceFiltered: 0,
+  maxPriceFiltered: 0,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -49,6 +57,18 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(loadSortedCameras, (state, action) => {
       state.cameras = action.payload;
+    })
+    .addCase(getMinPriceOfCameras, (state, action) => {
+      state.minPrice = action.payload;
+    })
+    .addCase(getMaxPriceOfCameras, (state, action) => {
+      state.maxPrice = action.payload;
+    })
+    .addCase(getMinPriceOfCamerasFiltered, (state, action) => {
+      state.minPriceFiltered = action.payload;
+    })
+    .addCase(getMaxPriceOfCamerasFiltered, (state, action) => {
+      state.maxPriceFiltered = action.payload;
     });
 });
 
