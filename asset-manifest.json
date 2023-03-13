@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/Camera_shop/static/css/main.d58b5e1f.css",
-    "main.js": "/Camera_shop/static/js/main.93b3e872.js",
+    "main.js": "/Camera_shop/static/js/main.8ecdc9c6.js",
     "index.html": "/Camera_shop/index.html",
     "main.d58b5e1f.css.map": "/Camera_shop/static/css/main.d58b5e1f.css.map",
-    "main.93b3e872.js.map": "/Camera_shop/static/js/main.93b3e872.js.map"
+    "main.8ecdc9c6.js.map": "/Camera_shop/static/js/main.8ecdc9c6.js.map"
   },
   "entrypoints": [
     "static/css/main.d58b5e1f.css",
-    "static/js/main.93b3e872.js"
+    "static/js/main.8ecdc9c6.js"
   ]
 }
