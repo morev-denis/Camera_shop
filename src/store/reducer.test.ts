@@ -35,6 +35,12 @@ const initialState: InitialState = {
   maxPriceFiltered: 0,
 };
 
+const minPrice = 1000;
+const maxPrice = 9990;
+
+const minPriceFiltered = 1000;
+const maxPriceFiltered = 9990;
+
 describe('Reducer', () => {
   it('without additional parameters should return initial state', () => {
     expect(reducer(void 0, { type: 'UNKNOWN_ACTION' })).toEqual(initialState);
@@ -79,6 +85,45 @@ describe('Reducer', () => {
     expect(reducer(initialState, { type: 'loadReviews', payload: reviews })).toEqual({
       ...initialState,
       reviews,
+    });
+  });
+
+  it('should update cameras by load sorted cameras', () => {
+    expect(reducer(initialState, { type: 'loadSortedCameras', payload: cameras })).toEqual({
+      ...initialState,
+      cameras,
+    });
+  });
+
+  it('should get min price of cameras', () => {
+    expect(reducer(initialState, { type: 'getMinPriceOfCameras', payload: minPrice })).toEqual({
+      ...initialState,
+      minPrice,
+    });
+  });
+
+  it('should get max price of cameras', () => {
+    expect(reducer(initialState, { type: 'getMaxPriceOfCameras', payload: maxPrice })).toEqual({
+      ...initialState,
+      maxPrice,
+    });
+  });
+
+  it('should get min price of filtered cameras', () => {
+    expect(
+      reducer(initialState, { type: 'getMinPriceOfCamerasFiltered', payload: minPriceFiltered }),
+    ).toEqual({
+      ...initialState,
+      minPriceFiltered,
+    });
+  });
+
+  it('should get max price of filtered cameras', () => {
+    expect(
+      reducer(initialState, { type: 'getMaxPriceOfCamerasFiltered', payload: maxPriceFiltered }),
+    ).toEqual({
+      ...initialState,
+      maxPriceFiltered,
     });
   });
 });

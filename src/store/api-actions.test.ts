@@ -13,7 +13,7 @@ import {
   makeFakePromo,
   makeFakeSimilarCameras,
   makeFakeReviews,
-  makeFakeReview
+  makeFakeReview,
 } from '../utils/mocks';
 
 import {
@@ -22,7 +22,9 @@ import {
   fetchPromoAction,
   fetchSimilarCamerasAction,
   fetchReviewsAction,
-  postReviewAction
+  postReviewAction,
+  fetchCamerasMinPriceFiltered,
+  fetchCamerasMaxPriceFiltered,
 } from './api-actions';
 
 import { APIRoute } from '../const';
@@ -143,6 +145,62 @@ describe('Async actions', () => {
       postReviewAction.pending.type,
       'postReview',
       postReviewAction.fulfilled.type,
+    ]);
+  });
+
+  it('should dispatch fetchCamerasMinPriceFiltered when GET /cameras', async () => {
+    const mockCamera = makeFakeCamera();
+    mockApi.onGet(APIRoute.Cameras).reply(200, [mockCamera, mockCamera]);
+
+    const store = mockStore();
+
+    await store.dispatch(
+      fetchCamerasMinPriceFiltered({
+        params: {
+          category: [''],
+          type: [''],
+          level: [''],
+          minPrice: '',
+          maxPrice: '',
+        },
+      }),
+    );
+
+    const actions = store.getActions().map(({ type }: Action<string>) => type);
+
+    expect(actions).toEqual([
+      fetchCamerasMinPriceFiltered.pending.type,
+      'loadCameras',
+      'getMinPriceOfCamerasFiltered',
+      fetchCamerasMinPriceFiltered.fulfilled.type,
+    ]);
+  });
+
+  it('should dispatch fetchCamerasMaxPriceFiltered when GET /cameras', async () => {
+    const mockCamera = makeFakeCamera();
+    mockApi.onGet(APIRoute.Cameras).reply(200, [mockCamera, mockCamera]);
+
+    const store = mockStore();
+
+    await store.dispatch(
+      fetchCamerasMaxPriceFiltered({
+        params: {
+          category: [''],
+          type: [''],
+          level: [''],
+          minPrice: '',
+          maxPrice: '',
+        },
+      }),
+    );
+
+    const actions = store.getActions().map(({ type }: Action<string>) => type);
+
+    expect(actions).toEqual([
+      fetchCamerasMaxPriceFiltered.pending.type,
+      'loadCameras',
+      'getMaxPriceOfCamerasFiltered',
+      fetchCamerasMaxPriceFiltered.fulfilled.type,
     ]);
   });
 });
