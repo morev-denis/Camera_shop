@@ -26,7 +26,7 @@ const Catalog = () => {
   const dispatch = useAppDispatch();
   const params = useParams();
 
-  const { cameras, queryParams } = useAppSelector((state) => state);
+  const { cameras } = useAppSelector((state) => state);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const paramsSort = useMemo(
@@ -138,7 +138,7 @@ const Catalog = () => {
                         type="radio"
                         id="sortPrice"
                         name={QueryParam.Sort}
-                        defaultChecked={queryParams._sort === SortType.Price}
+                        defaultChecked={paramsSort._sort === SortType.Price}
                         data-sort={SortType.Price}
                         onChange={handleSortChange}
                       />
@@ -149,7 +149,7 @@ const Catalog = () => {
                         type="radio"
                         id="sortPopular"
                         name={QueryParam.Sort}
-                        defaultChecked={queryParams._sort === SortType.Rating}
+                        defaultChecked={paramsSort._sort === SortType.Rating}
                         data-sort={SortType.Rating}
                         onChange={handleSortChange}
                       />
@@ -163,7 +163,7 @@ const Catalog = () => {
                         id="up"
                         name="sort-icon"
                         aria-label="По возрастанию"
-                        defaultChecked={queryParams._order === OrderType.Asc}
+                        defaultChecked={paramsSort._order === OrderType.Asc}
                         data-order={OrderType.Asc}
                         onChange={handleOrderChange}
                       />
@@ -179,7 +179,7 @@ const Catalog = () => {
                         id="down"
                         name="sort-icon"
                         aria-label="По убыванию"
-                        defaultChecked={queryParams._order === OrderType.Desc}
+                        defaultChecked={paramsSort._order === OrderType.Desc}
                         data-order={OrderType.Desc}
                         onChange={handleOrderChange}
                       />
