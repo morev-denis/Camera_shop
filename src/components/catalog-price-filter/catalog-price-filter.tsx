@@ -74,6 +74,7 @@ const CatalogPriceFilter = () => {
     if (maxPriceFiltered && maxPriceValue) {
       setMaxPriceValue(Math.min(maxPriceValue, maxPriceFiltered));
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [minPriceFiltered, maxPriceFiltered]);
 
   return (
