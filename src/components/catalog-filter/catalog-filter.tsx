@@ -92,6 +92,10 @@ const CatalogFilter = () => {
                 id="Плёночная"
                 onChange={handleFilterChange}
                 checked={searchParams.getAll('type').includes('Плёночная')}
+                disabled={
+                  searchParams.getAll('category').includes('Видеокамера') &&
+                  !searchParams.getAll('category').includes('Фотокамера')
+                }
               />
               <span className="custom-checkbox__icon"></span>
               <span className="custom-checkbox__label">Плёночная</span>
@@ -105,6 +109,10 @@ const CatalogFilter = () => {
                 id="Моментальная"
                 onChange={handleFilterChange}
                 checked={searchParams.getAll('type').includes('Моментальная')}
+                disabled={
+                  searchParams.getAll('category').includes('Видеокамера') &&
+                  !searchParams.getAll('category').includes('Фотокамера')
+                }
               />
               <span className="custom-checkbox__icon"></span>
               <span className="custom-checkbox__label">Моментальная</span>
