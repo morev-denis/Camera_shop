@@ -1,8 +1,9 @@
-import { useState, ChangeEvent, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, ChangeEvent, KeyboardEvent, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { useAppSelector } from '../../hooks/useAppSelector';
 
+import { Camera } from '../../types/camera';
 import { Cameras } from '../../types/cameras';
 
 import { AppRoute } from '../../const';
@@ -11,6 +12,7 @@ const FormSearch = () => {
   const [searchCameraName, setSearchCameraName] = useState<string>('');
   const [isFormSearchOpen, setFormSearchOpen] = useState(false);
   const [searchedCameras, setSearchedCameras] = useState<Cameras | null>(null);
+  const navigate = useNavigate();
 
   const { cameras } = useAppSelector((state) => state);
 
@@ -27,6 +29,16 @@ const FormSearch = () => {
   const handleResetButtonClick = () => {
     setSearchCameraName('');
     setFormSearchOpen(false);
+  };
+
+  const handleSearchedCameraClick = (camera: Camera) => {
+    navigate(`${AppRoute.Cameras}/${camera.id}`);
+  };
+
+  const handleKeyDownClick = (evt: KeyboardEvent<HTMLLIElement>, camera: Camera) => {
+    if (evt.key === 'Enter') {
+      handleSearchedCameraClick(camera);
+    }
   };
 
   useEffect(() => {
@@ -63,8 +75,14 @@ const FormSearch = () => {
         <ul className="form-search__select-list">
           {searchedCameras && searchedCameras?.length > 0 ? (
             searchedCameras.map((camera) => (
-              <li key={camera.id} className="form-search__select-item" tabIndex={0}>
-                <Link to={`${AppRoute.Cameras}/${camera.id}`}>{camera.name}</Link>
+              <li
+                key={camera.id}
+                className="form-search__select-item"
+                tabIndex={0}
+                onClick={() => handleSearchedCameraClick(camera)}
+                onKeyDown={(evt) => handleKeyDownClick(evt, camera)}
+              >
+                {camera.name}
               </li>
             ))
           ) : (
