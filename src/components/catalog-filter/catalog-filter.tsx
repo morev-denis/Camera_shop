@@ -63,6 +63,10 @@ const CatalogFilter = () => {
                 id="Видеокамера"
                 onChange={handleFilterChange}
                 checked={searchParams.getAll('category').includes('Видеокамера')}
+                disabled={
+                  searchParams.getAll('type').includes('Плёночная') ||
+                  searchParams.getAll('type').includes('Моментальная')
+                }
               />
               <span className="custom-checkbox__icon"></span>
               <span className="custom-checkbox__label">Видеокамера</span>
