@@ -21,6 +21,7 @@ import Tabs from '../../components/tabs/tabs';
 import SimilarCameras from '../../components/similar-cameras/similar-cameras';
 import ReviewBlock from '../../components/review-block/review-block';
 import CatalogAddItemModal from '../../components/catalog-add-item-modal/catalog-add-item-modal';
+import CatalogAddItemSuccessModal from '../../components/catalog-add-item-success-modal/catalog-add-item-success-modal';
 
 import Footer from '../../components/footer/footer';
 
@@ -33,6 +34,7 @@ const ItemScreen = () => {
   const { camera, reviews, similarCameras } = useAppSelector((state) => state);
 
   const [isCatalogAddItemModalOpen, setCatalogAddItemModalOpen] = useState(false);
+  const [isCatalogAddItemSuccessModalOpen, setCatalogAddItemSuccessModalOpen] = useState(false);
 
   const handleAddBasketBtnClick = () => {
     setCatalogAddItemModalOpen(true);
@@ -130,7 +132,14 @@ const ItemScreen = () => {
         <CatalogAddItemModal
           isCatalogAddItemModalOpen={isCatalogAddItemModalOpen}
           setCatalogAddItemModalOpen={setCatalogAddItemModalOpen}
+          setCatalogAddItemSuccessModalOpen={setCatalogAddItemSuccessModalOpen}
           camera={camera}
+        />
+      )}
+      {isCatalogAddItemSuccessModalOpen && (
+        <CatalogAddItemSuccessModal
+          isCatalogAddItemSuccessModalOpen={isCatalogAddItemSuccessModalOpen}
+          setCatalogAddItemSuccessModalOpen={setCatalogAddItemSuccessModalOpen}
         />
       )}
     </>

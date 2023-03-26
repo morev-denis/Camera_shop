@@ -41,6 +41,10 @@ export const getMaxPriceOfCamerasFiltered = createAction(
   }),
 );
 
+export const addCameraToBasket = createAction('addCameraToBasket', (value: Camera) => ({
+  payload: value,
+}));
+
 export const loadReviews = createAction('loadReviews', (value: Reviews) => ({ payload: value }));
 
 export const postReview = createAction('postReview');

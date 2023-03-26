@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 
 import StarRating from '../../components/star-rating/star-rating';
 import CatalogAddItemModal from '../../components/catalog-add-item-modal/catalog-add-item-modal';
+import CatalogAddItemSuccessModal from '../catalog-add-item-success-modal/catalog-add-item-success-modal';
+
+import { useAppSelector } from '../../hooks/useAppSelector';
 
 import { Camera } from '../../types/camera';
 
@@ -14,6 +17,17 @@ type Props = {
 
 const Card = ({ camera }: Props) => {
   const [isCatalogAddItemModalOpen, setCatalogAddItemModalOpen] = useState(false);
+  const [isCatalogAddItemSuccessModalOpen, setCatalogAddItemSuccessModalOpen] = useState(false);
+
+  const { basket } = useAppSelector((state) => state);
+
+  let isCameraInBasket = false;
+
+  basket.forEach((element) => {
+    if (element.id === camera.id) {
+      isCameraInBasket = true;
+    }
+  });
 
   const handleAddBasketBtnClick = () => {
     setCatalogAddItemModalOpen(true);
@@ -53,13 +67,22 @@ const Card = ({ camera }: Props) => {
         </p>
       </div>
       <div className="product-card__buttons">
-        <button
-          className="btn btn--purple product-card__btn"
-          type="button"
-          onClick={handleAddBasketBtnClick}
-        >
-          Купить
-        </button>
+        {isCameraInBasket ? (
+          <Link className="btn btn--purple-border" to={AppRoute.Basket}>
+            <svg width="16" height="16" aria-hidden="true">
+              <use xlinkHref="#icon-basket"></use>
+            </svg>
+            В корзине
+          </Link>
+        ) : (
+          <button
+            className="btn btn--purple product-card__btn"
+            type="button"
+            onClick={handleAddBasketBtnClick}
+          >
+            Купить
+          </button>
+        )}
         <Link to={`${AppRoute.Cameras}/${camera.id}`} className="btn btn--transparent">
           Подробнее{' '}
         </Link>
@@ -69,7 +92,14 @@ const Card = ({ camera }: Props) => {
         <CatalogAddItemModal
           isCatalogAddItemModalOpen={isCatalogAddItemModalOpen}
           setCatalogAddItemModalOpen={setCatalogAddItemModalOpen}
+          setCatalogAddItemSuccessModalOpen={setCatalogAddItemSuccessModalOpen}
           camera={camera}
+        />
+      )}
+      {isCatalogAddItemSuccessModalOpen && (
+        <CatalogAddItemSuccessModal
+          isCatalogAddItemSuccessModalOpen={isCatalogAddItemSuccessModalOpen}
+          setCatalogAddItemSuccessModalOpen={setCatalogAddItemSuccessModalOpen}
         />
       )}
     </div>

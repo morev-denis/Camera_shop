@@ -1,5 +1,9 @@
 import { useCallback, useEffect } from 'react';
 import ReactModal from 'react-modal';
+
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { addCameraToBasket } from '../../store/action';
+
 import { Camera } from '../../types/camera';
 
 ReactModal.defaultStyles = {};
@@ -7,14 +11,18 @@ ReactModal.defaultStyles = {};
 type Props = {
   isCatalogAddItemModalOpen: boolean;
   setCatalogAddItemModalOpen: (value: boolean) => void;
+  setCatalogAddItemSuccessModalOpen: (value: boolean) => void;
   camera: Camera;
 };
 
 const CatalogAddItemModal = ({
   isCatalogAddItemModalOpen,
   setCatalogAddItemModalOpen,
+  setCatalogAddItemSuccessModalOpen,
   camera,
 }: Props) => {
+  const dispatch = useAppDispatch();
+
   const closeModal = useCallback(() => {
     setCatalogAddItemModalOpen(false);
   }, [setCatalogAddItemModalOpen]);
@@ -27,6 +35,12 @@ const CatalogAddItemModal = ({
     },
     [closeModal],
   );
+
+  const handleAddBasketBtnClick = () => {
+    dispatch(addCameraToBasket(camera));
+    closeModal();
+    setCatalogAddItemSuccessModalOpen(true);
+  };
 
   useEffect(() => {
     document.addEventListener('keyup', handleEscClick);
@@ -86,7 +100,11 @@ const CatalogAddItemModal = ({
               </div>
             </div>
             <div className="modal__buttons">
-              <button className="btn btn--purple modal__btn modal__btn--fit-width" type="button">
+              <button
+                className="btn btn--purple modal__btn modal__btn--fit-width"
+                type="button"
+                onClick={handleAddBasketBtnClick}
+              >
                 <svg width="24" height="16" aria-hidden="true">
                   <use xlinkHref="#icon-add-basket"></use>
                 </svg>

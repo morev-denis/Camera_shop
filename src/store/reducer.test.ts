@@ -33,6 +33,7 @@ const initialState: InitialState = {
   maxPrice: 0,
   minPriceFiltered: 0,
   maxPriceFiltered: 0,
+  basket: [],
 };
 
 const minPrice = 1000;

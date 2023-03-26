@@ -20,6 +20,7 @@ describe('Component: CatalogAddItemModal', () => {
             camera={camera}
             isCatalogAddItemModalOpen
             setCatalogAddItemModalOpen={() => true}
+            setCatalogAddItemSuccessModalOpen={() => false}
           />
         </HistoryRouter>
       </Provider>,

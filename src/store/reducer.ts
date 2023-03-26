@@ -12,6 +12,7 @@ import {
   getMaxPriceOfCameras,
   getMinPriceOfCamerasFiltered,
   getMaxPriceOfCamerasFiltered,
+  addCameraToBasket,
 } from './action';
 
 import { InitialState } from '../types/initial-state';
@@ -33,6 +34,7 @@ const initialState: InitialState = {
   maxPrice: 0,
   minPriceFiltered: 0,
   maxPriceFiltered: 0,
+  basket: [],
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -69,6 +71,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(getMaxPriceOfCamerasFiltered, (state, action) => {
       state.maxPriceFiltered = action.payload;
+    })
+    .addCase(addCameraToBasket, (state, action) => {
+      state.basket?.push(action.payload);
     });
 });
 

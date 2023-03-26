@@ -21,6 +21,7 @@ export enum AppRoute {
   Catalog = '/catalog/page_:pageNumber',
   Cameras = '/cameras',
   Camera = '/cameras/:cameraId',
+  Basket = '/basket',
 }
 
 export enum Tab {
