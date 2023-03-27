@@ -16,6 +16,9 @@ export const CONTENT_PER_PAGE = 9;
 
 export const SIMILAR_CAMERAS_PER_PAGE = 3;
 
+export const MIN_ITEM_COUNT = 1;
+export const MAX_ITEM_COUNT = 99;
+
 export enum AppRoute {
   Root = '/',
   Catalog = '/catalog/page_:pageNumber',
