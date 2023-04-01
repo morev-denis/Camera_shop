@@ -18,5 +18,5 @@ export type InitialState = {
   maxPrice: number;
   minPriceFiltered: number;
   maxPriceFiltered: number;
-  basket: Cameras;
+  basket: { id: number; count: number }[];
 };

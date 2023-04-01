@@ -52,8 +52,8 @@ const BasketScreen = () => {
             <div className="container">
               <h1 className="title title--h2">Корзина</h1>
               <ul className="basket__list">
-                {basket.map((camera) => (
-                  <BasketItem key={camera.id} camera={camera} />
+                {basket.map((item) => (
+                  <BasketItem key={item.id} item={item} />
                 ))}
               </ul>
               {basket.length > 0 ? (

@@ -41,7 +41,19 @@ export const getMaxPriceOfCamerasFiltered = createAction(
   }),
 );
 
-export const addCameraToBasket = createAction('addCameraToBasket', (value: Camera) => ({
+export const addCameraToBasket = createAction(
+  'addCameraToBasket',
+  (value: { id: number; count: number }) => ({
+    payload: value,
+  }),
+);
+
+export const changeBasketItemCount = createAction(
+  'changeBasketItemCount',
+  (value: { id: number; count: number }) => ({ payload: value }),
+);
+
+export const deleteItem = createAction('deleteItem', (value: { id: number; count: number }) => ({
   payload: value,
 }));
 

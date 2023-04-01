@@ -1,37 +1,59 @@
 import { ChangeEvent, useState } from 'react';
 
-import { Camera } from '../../types/camera';
+import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
+
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { useAppSelector } from '../../hooks/useAppSelector';
+
+import { changeBasketItemCount, deleteItem } from '../../store/action';
 
 import { MIN_ITEM_COUNT, MAX_ITEM_COUNT } from '../../const';
 
 type Props = {
-  camera: Camera;
+  item: { id: number; count: number };
 };
 
-const BasketItem = ({ camera }: Props) => {
-  const [count, setCount] = useState(1);
+const BasketItem = ({ item }: Props) => {
+  const dispatch = useAppDispatch();
+  const { cameras } = useAppSelector((state) => state);
+  const camera = cameras?.find((element) => element.id === item.id);
+
+  const [count, setCount] = useState(item.count);
 
   const handlePrevBtnClick = () => {
     setCount((prev) => prev - 1);
+    dispatch(changeBasketItemCount({ id: item.id, count: count - 1 }));
   };
 
   const handleNextBtnClick = () => {
     setCount((prev) => prev + 1);
+    dispatch(changeBasketItemCount({ id: item.id, count: count + 1 }));
   };
 
   const handleInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
     if (Number(evt.target.value) <= MIN_ITEM_COUNT) {
       setCount(MIN_ITEM_COUNT);
+      dispatch(changeBasketItemCount({ id: item.id, count: MIN_ITEM_COUNT }));
       return;
     }
 
     if (Number(evt.target.value) > MAX_ITEM_COUNT) {
       setCount(MAX_ITEM_COUNT);
+      dispatch(changeBasketItemCount({ id: item.id, count: MAX_ITEM_COUNT }));
       return;
     }
 
     setCount(Number(evt.target.value));
+    dispatch(changeBasketItemCount({ id: item.id, count: Number(evt.target.value) }));
   };
+
+  const handleDeleteItem = () => {
+    dispatch(deleteItem({ id: item.id, count: item.count }));
+  };
+
+  if (!camera) {
+    return <NotFoundScreen />;
+  }
 
   return (
     <li className="basket-item">
@@ -106,6 +128,7 @@ const BasketItem = ({ camera }: Props) => {
         disabled={count >= MAX_ITEM_COUNT}
         type="button"
         aria-label="Удалить товар"
+        onClick={handleDeleteItem}
       >
         <svg width="10" height="10" aria-hidden="true">
           <use xlinkHref="#icon-close"></use>

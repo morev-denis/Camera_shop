@@ -13,6 +13,8 @@ import {
   getMinPriceOfCamerasFiltered,
   getMaxPriceOfCamerasFiltered,
   addCameraToBasket,
+  changeBasketItemCount,
+  deleteItem,
 } from './action';
 
 import { InitialState } from '../types/initial-state';
@@ -73,7 +75,26 @@ const reducer = createReducer(initialState, (builder) => {
       state.maxPriceFiltered = action.payload;
     })
     .addCase(addCameraToBasket, (state, action) => {
-      state.basket?.push(action.payload);
+      const index = state.basket.findIndex(
+        (element: { id: number; count: number }) => element.id === action.payload.id,
+      );
+      if (index < 0) {
+        state.basket?.push(action.payload);
+      } else {
+        state.basket[index].count++;
+      }
+    })
+    .addCase(changeBasketItemCount, (state, action) => {
+      const index = state.basket.findIndex(
+        (element: { id: number; count: number }) => element.id === action.payload.id,
+      );
+      state.basket[index].count = action.payload.count;
+    })
+    .addCase(deleteItem, (state, action) => {
+      const index = state.basket.findIndex(
+        (element: { id: number; count: number }) => element.id === action.payload.id,
+      );
+      state.basket.splice(index, 1);
     });
 });
 

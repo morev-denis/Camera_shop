@@ -9,6 +9,8 @@ import { AppRoute } from '../../const';
 const Header = () => {
   const { basket } = useAppSelector((state) => state);
 
+  const itemsCount = basket.reduce((acc: number, curr) => acc + curr.count, 0);
+
   return (
     <header className="header" id="header">
       <div className="container">
@@ -46,7 +48,7 @@ const Header = () => {
           <svg width="16" height="16" aria-hidden="true">
             <use xlinkHref="#icon-basket"></use>
           </svg>
-          {basket.length !== 0 && <span className="header__basket-count">{basket.length}</span>}
+          {basket.length !== 0 && <span className="header__basket-count">{itemsCount}</span>}
         </Link>
       </div>
     </header>

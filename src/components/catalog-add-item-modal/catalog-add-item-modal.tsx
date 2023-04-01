@@ -37,7 +37,7 @@ const CatalogAddItemModal = ({
   );
 
   const handleAddBasketBtnClick = () => {
-    dispatch(addCameraToBasket(camera));
+    dispatch(addCameraToBasket({ id: camera.id, count: 1 }));
     closeModal();
     setCatalogAddItemSuccessModalOpen(true);
   };
