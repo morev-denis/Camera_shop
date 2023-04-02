@@ -1,3 +1,4 @@
+import { useState, ChangeEvent, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
@@ -8,10 +9,35 @@ import BasketItem from '../../components/basket-item/basket-item';
 import Footer from '../../components/footer/footer';
 
 import { useAppSelector } from '../../hooks/useAppSelector';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+
 import { AppRoute } from '../../const';
+import { postPromoAction } from '../../store/api-actions';
 
 const BasketScreen = () => {
-  const { basket } = useAppSelector((state) => state);
+  const dispatch = useAppDispatch();
+  const { basket, cameras, discount, isValidDiscount, isInvalidDiscount } = useAppSelector(
+    (state) => state,
+  );
+
+  const summary = basket.reduce((acc: number, curr): number => {
+    if (cameras) {
+      const index = cameras.findIndex((el) => el.id === curr.id);
+      return acc + cameras[index].price * curr.count;
+    }
+    return 0;
+  }, 0);
+
+  const [promo, setPromo] = useState('');
+
+  const handlePromoInput = (evt: ChangeEvent<HTMLInputElement>) => {
+    setPromo(evt.target.value);
+  };
+
+  const handlePromoSubmit = (evt: FormEvent) => {
+    evt.preventDefault();
+    dispatch(postPromoAction({ coupon: promo }));
+  };
 
   return (
     <>
@@ -63,11 +89,21 @@ const BasketScreen = () => {
                       Если у вас есть промокод на скидку, примените его в этом поле
                     </p>
                     <div className="basket-form">
-                      <form action="#">
-                        <div className="custom-input">
+                      <form onSubmit={handlePromoSubmit}>
+                        <div
+                          className={`custom-input ${isValidDiscount ? 'is-valid' : ''} ${
+                            isInvalidDiscount ? 'is-invalid' : ''
+                          }`}
+                        >
                           <label>
                             <span className="custom-input__label">Промокод</span>
-                            <input type="text" name="promo" placeholder="Введите промокод" />
+                            <input
+                              type="text"
+                              name="promo"
+                              placeholder="Введите промокод"
+                              value={promo}
+                              onChange={handlePromoInput}
+                            />
                           </label>
                           <p className="custom-input__error">Промокод неверный</p>
                           <p className="custom-input__success">Промокод принят!</p>
@@ -81,12 +117,20 @@ const BasketScreen = () => {
                   <div className="basket__summary-order">
                     <p className="basket__summary-item">
                       <span className="basket__summary-text">Всего:</span>
-                      <span className="basket__summary-value">111 390 ₽</span>
+                      <span className="basket__summary-value">
+                        {summary.toLocaleString('ru-RU')} ₽
+                      </span>
                     </p>
                     <p className="basket__summary-item">
                       <span className="basket__summary-text">Скидка:</span>
-                      <span className="basket__summary-value basket__summary-value--bonus">
-                        0 ₽
+                      <span
+                        className={
+                          discount
+                            ? 'basket__summary-value basket__summary-value--bonus'
+                            : 'basket__summary-value'
+                        }
+                      >
+                        {((summary * discount) / 100).toLocaleString('ru-RU')} ₽
                       </span>
                     </p>
                     <p className="basket__summary-item">
@@ -94,7 +138,7 @@ const BasketScreen = () => {
                         К оплате:
                       </span>
                       <span className="basket__summary-value basket__summary-value--total">
-                        111 390 ₽
+                        {(summary - (summary * discount) / 100).toLocaleString('ru-RU')} ₽
                       </span>
                     </p>
                     <button className="btn btn--purple" type="submit">

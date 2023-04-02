@@ -19,4 +19,7 @@ export type InitialState = {
   minPriceFiltered: number;
   maxPriceFiltered: number;
   basket: { id: number; count: number }[];
+  discount: number;
+  isValidDiscount: boolean;
+  isInvalidDiscount: boolean;
 };

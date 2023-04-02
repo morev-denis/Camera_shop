@@ -14,6 +14,9 @@ import {
   getMaxPriceOfCameras,
   getMinPriceOfCamerasFiltered,
   getMaxPriceOfCamerasFiltered,
+  setDiscount,
+  setValidDiscount,
+  setInvalidDiscount,
 } from './action';
 
 import { APIRoute, QueryParam, OrderType, SortType } from '../const';
@@ -24,6 +27,7 @@ import { Cameras } from '../types/cameras';
 import { Camera } from '../types/camera';
 import { Reviews } from '../types/reviews';
 import { ReviewPost } from '../types/review-post';
+import { CouponPost } from '../types/coupon-post';
 
 export const fetchPromoAction = createAsyncThunk<
   void,
@@ -228,6 +232,27 @@ export const fetchReviewsAction = createAsyncThunk<
   } catch (error) {
     toast.error('Не удалось загрузить данные комментариев. Попробуйте позже');
     throw error;
+  }
+});
+
+export const postPromoAction = createAsyncThunk<
+  void,
+  CouponPost,
+  { dispatch: AppDispatch; state: State; extra: AxiosInstance }
+>('postPromo', async ({ coupon }, { dispatch, extra: api }) => {
+  try {
+    const { data } = await api.post<number>(APIRoute.Coupons, {
+      coupon,
+    });
+
+    if (data) {
+      dispatch(setDiscount(data));
+      dispatch(setInvalidDiscount(false));
+      dispatch(setValidDiscount(true));
+    }
+  } catch (error) {
+    dispatch(setValidDiscount(false));
+    dispatch(setInvalidDiscount(true));
   }
 });
 

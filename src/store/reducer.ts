@@ -15,6 +15,9 @@ import {
   addCameraToBasket,
   changeBasketItemCount,
   deleteItem,
+  setDiscount,
+  setValidDiscount,
+  setInvalidDiscount,
 } from './action';
 
 import { InitialState } from '../types/initial-state';
@@ -37,6 +40,9 @@ const initialState: InitialState = {
   minPriceFiltered: 0,
   maxPriceFiltered: 0,
   basket: [],
+  discount: 0,
+  isValidDiscount: false,
+  isInvalidDiscount: false,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -95,6 +101,15 @@ const reducer = createReducer(initialState, (builder) => {
         (element: { id: number; count: number }) => element.id === action.payload.id,
       );
       state.basket.splice(index, 1);
+    })
+    .addCase(setDiscount, (state, action) => {
+      state.discount = action.payload;
+    })
+    .addCase(setValidDiscount, (state, action) => {
+      state.isValidDiscount = action.payload;
+    })
+    .addCase(setInvalidDiscount, (state, action) => {
+      state.isInvalidDiscount = action.payload;
     });
 });
 

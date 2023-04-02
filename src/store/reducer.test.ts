@@ -34,6 +34,9 @@ const initialState: InitialState = {
   minPriceFiltered: 0,
   maxPriceFiltered: 0,
   basket: [],
+  discount: 0,
+  isValidDiscount: false,
+  isInvalidDiscount: false,
 };
 
 const minPrice = 1000;
