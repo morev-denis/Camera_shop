@@ -17,6 +17,7 @@ import {
   setDiscount,
   setValidDiscount,
   setInvalidDiscount,
+  setCoupon,
 } from './action';
 
 import { APIRoute, QueryParam, OrderType, SortType } from '../const';
@@ -28,6 +29,7 @@ import { Camera } from '../types/camera';
 import { Reviews } from '../types/reviews';
 import { ReviewPost } from '../types/review-post';
 import { CouponPost } from '../types/coupon-post';
+import { OrderPost } from '../types/order-post';
 
 export const fetchPromoAction = createAsyncThunk<
   void,
@@ -246,13 +248,31 @@ export const postPromoAction = createAsyncThunk<
     });
 
     if (data) {
+      dispatch(setCoupon(coupon));
       dispatch(setDiscount(data));
       dispatch(setInvalidDiscount(false));
       dispatch(setValidDiscount(true));
     }
   } catch (error) {
+    dispatch(setCoupon(''));
     dispatch(setValidDiscount(false));
     dispatch(setInvalidDiscount(true));
+  }
+});
+
+export const postOrderAction = createAsyncThunk<
+  void,
+  OrderPost,
+  { dispatch: AppDispatch; state: State; extra: AxiosInstance }
+>('postOrder', async ({ camerasIds, coupon }, { dispatch, extra: api }) => {
+  try {
+    await api.post<OrderPost>(APIRoute.Orders, {
+      camerasIds,
+      coupon,
+    });
+  } catch (error) {
+    toast.error('Не удалось отправить заказ. Попробуйте позже');
+    throw error;
   }
 });
 

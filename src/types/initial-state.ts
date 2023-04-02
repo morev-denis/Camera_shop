@@ -22,4 +22,5 @@ export type InitialState = {
   discount: number;
   isValidDiscount: boolean;
   isInvalidDiscount: boolean;
+  couponValue: string;
 };

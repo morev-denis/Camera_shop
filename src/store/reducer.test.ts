@@ -37,6 +37,7 @@ const initialState: InitialState = {
   discount: 0,
   isValidDiscount: false,
   isInvalidDiscount: false,
+  couponValue: '',
 };
 
 const minPrice = 1000;

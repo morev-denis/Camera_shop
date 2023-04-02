@@ -62,6 +62,7 @@ export const loadReviews = createAction('loadReviews', (value: Reviews) => ({ pa
 export const postReview = createAction('postReview');
 
 export const setDiscount = createAction('setDiscount', (value: number) => ({ payload: value }));
+export const setCoupon = createAction('setCoupon', (value: string) => ({ payload: value }));
 
 export const setValidDiscount = createAction('setValidDiscount', (value: boolean) => ({
   payload: value,

@@ -18,6 +18,7 @@ import {
   setDiscount,
   setValidDiscount,
   setInvalidDiscount,
+  setCoupon,
 } from './action';
 
 import { InitialState } from '../types/initial-state';
@@ -43,6 +44,7 @@ const initialState: InitialState = {
   discount: 0,
   isValidDiscount: false,
   isInvalidDiscount: false,
+  couponValue: '',
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -104,6 +106,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setDiscount, (state, action) => {
       state.discount = action.payload;
+    })
+    .addCase(setCoupon, (state, action) => {
+      state.couponValue = action.payload;
     })
     .addCase(setValidDiscount, (state, action) => {
       state.isValidDiscount = action.payload;

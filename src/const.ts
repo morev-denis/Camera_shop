@@ -7,6 +7,7 @@ export enum APIRoute {
   Cameras = '/cameras',
   Reviews = '/reviews',
   Coupons = '/coupons',
+  Orders = '/orders',
 }
 
 export const MAX_RATING = 5;

@@ -8,17 +8,20 @@ import BasketItem from '../../components/basket-item/basket-item';
 
 import Footer from '../../components/footer/footer';
 
+import ProductBasketSuccessModal from '../../components/product-basket-success/product-basket-success';
+
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 
 import { AppRoute } from '../../const';
-import { postPromoAction } from '../../store/api-actions';
+import { postOrderAction, postPromoAction } from '../../store/api-actions';
 
 const BasketScreen = () => {
   const dispatch = useAppDispatch();
-  const { basket, cameras, discount, isValidDiscount, isInvalidDiscount } = useAppSelector(
-    (state) => state,
-  );
+  const { basket, cameras, discount, isValidDiscount, isInvalidDiscount, couponValue } =
+    useAppSelector((state) => state);
+
+  const [isProductBasketSuccessModalOpen, setProductBasketSuccessModalOpen] = useState(false);
 
   const summary = basket.reduce((acc: number, curr): number => {
     if (cameras) {
@@ -37,6 +40,21 @@ const BasketScreen = () => {
   const handlePromoSubmit = (evt: FormEvent) => {
     evt.preventDefault();
     dispatch(postPromoAction({ coupon: promo }));
+  };
+
+  const handleSubmitOrder = () => {
+    const order = couponValue
+      ? {
+        camerasIds: basket.flatMap(({ id, count }) => Array.from({ length: count }, () => id)),
+        coupon: String(couponValue),
+      }
+      : {
+        camerasIds: basket.flatMap(({ id, count }) => Array.from({ length: count }, () => id)),
+        coupon: null,
+      };
+    dispatch(postOrderAction(order)).then(() => {
+      setProductBasketSuccessModalOpen(true);
+    });
   };
 
   return (
@@ -141,7 +159,7 @@ const BasketScreen = () => {
                         {(summary - (summary * discount) / 100).toLocaleString('ru-RU')} ₽
                       </span>
                     </p>
-                    <button className="btn btn--purple" type="submit">
+                    <button className="btn btn--purple" type="submit" onClick={handleSubmitOrder}>
                       Оформить заказ
                     </button>
                   </div>
@@ -152,6 +170,12 @@ const BasketScreen = () => {
             </div>
           </section>
         </div>
+        {isProductBasketSuccessModalOpen && (
+          <ProductBasketSuccessModal
+            isProductBasketSuccessModalOpen={isProductBasketSuccessModalOpen}
+            setProductBasketSuccessModalOpen={setProductBasketSuccessModalOpen}
+          />
+        )}
       </main>
 
       <Footer />
