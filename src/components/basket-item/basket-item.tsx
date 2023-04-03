@@ -75,7 +75,7 @@ const BasketItem = ({ item }: Props) => {
       <div className="basket-item__description">
         <p className="basket-item__title">{camera.name}</p>
         <ul className="basket-item__list">
-          <li className="basket-item__list-item">
+          <li className="basket-item__list-item" data-testid="basket-item">
             <span className="basket-item__article">Артикул:</span>
             <span className="basket-item__number">{camera.vendorCode}</span>
           </li>

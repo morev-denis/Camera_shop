@@ -25,6 +25,8 @@ import {
   postReviewAction,
   fetchCamerasMinPriceFiltered,
   fetchCamerasMaxPriceFiltered,
+  postPromoAction,
+  postOrderAction,
 } from './api-actions';
 
 import { APIRoute } from '../const';
@@ -202,5 +204,41 @@ describe('Async actions', () => {
       'getMaxPriceOfCamerasFiltered',
       fetchCamerasMaxPriceFiltered.fulfilled.type,
     ]);
+  });
+
+  it('should dispatch postPromoAction when POST /coupons', async () => {
+    mockApi.onPost(APIRoute.Coupons).reply(200, Number);
+
+    const store = mockStore();
+
+    await store.dispatch(postPromoAction({ coupon: 'coupon-333' }));
+
+    const actions = store.getActions().map(({ type }: Action<string>) => type);
+
+    expect(actions).toEqual([
+      postPromoAction.pending.type,
+      'setCoupon',
+      'setDiscount',
+      'setInvalidDiscount',
+      'setValidDiscount',
+      postPromoAction.fulfilled.type,
+    ]);
+  });
+
+  it('should dispatch postOrderAction when POST /orders', async () => {
+    mockApi.onPost(APIRoute.Orders).reply(200);
+
+    const store = mockStore();
+
+    await store.dispatch(
+      postOrderAction({
+        camerasIds: [3, 5, 4],
+        coupon: null,
+      }),
+    );
+
+    const actions = store.getActions().map(({ type }: Action<string>) => type);
+
+    expect(actions).toEqual([postOrderAction.pending.type, postOrderAction.fulfilled.type]);
   });
 });

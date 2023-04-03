@@ -63,6 +63,10 @@ const camera = makeFakeCamera();
 const cameras = makeFakeCameras();
 const reviews = makeFakeReviews();
 const similarCameras = makeFakeSimilarCameras();
+const basket = [
+  { id: 1, count: 3 },
+  { id: 3, count: 2 },
+];
 
 const mockStore = configureMockStore(middlewares);
 
@@ -73,4 +77,5 @@ export const store = mockStore({
   reviews: reviews,
   similarCameras: similarCameras,
   reviewsCount: REVIEWS_COUNT,
+  basket,
 });

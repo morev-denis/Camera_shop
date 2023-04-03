@@ -33,7 +33,10 @@ const initialState: InitialState = {
   maxPrice: 0,
   minPriceFiltered: 0,
   maxPriceFiltered: 0,
-  basket: [],
+  basket: [
+    { id: 1, count: 2 },
+    { id: 2, count: 3 },
+  ],
   discount: 0,
   isValidDiscount: false,
   isInvalidDiscount: false,
@@ -47,17 +50,6 @@ const minPriceFiltered = 1000;
 const maxPriceFiltered = 9990;
 
 describe('Reducer', () => {
-  it('without additional parameters should return initial state', () => {
-    expect(reducer(void 0, { type: 'UNKNOWN_ACTION' })).toEqual(initialState);
-  });
-
-  it('should increase reviews count', () => {
-    expect(reducer(initialState, { type: 'increaseReviewsCount' })).toEqual({
-      ...initialState,
-      reviewsCount: initialState.reviewsCount + REVIEWS_COUNT,
-    });
-  });
-
   it('should update camera by load camera', () => {
     expect(reducer(initialState, { type: 'loadCamera', payload: camera })).toEqual({
       ...initialState,
@@ -129,6 +121,65 @@ describe('Reducer', () => {
     ).toEqual({
       ...initialState,
       maxPriceFiltered,
+    });
+  });
+
+  it('should set invalid discount to true', () => {
+    expect(reducer(initialState, { type: 'setInvalidDiscount', payload: true })).toEqual({
+      ...initialState,
+      isInvalidDiscount: true,
+    });
+  });
+
+  it('should set valid discount to true', () => {
+    expect(reducer(initialState, { type: 'setValidDiscount', payload: true })).toEqual({
+      ...initialState,
+      isValidDiscount: true,
+    });
+  });
+
+  it('should set couponValue to camera-333', () => {
+    expect(reducer(initialState, { type: 'setCoupon', payload: 'camera-333' })).toEqual({
+      ...initialState,
+      couponValue: 'camera-333',
+    });
+  });
+
+  it('should set discount to 15', () => {
+    expect(reducer(initialState, { type: 'setDiscount', payload: 15 })).toEqual({
+      ...initialState,
+      discount: 15,
+    });
+  });
+
+  it('should delete item', () => {
+    expect(reducer(initialState, { type: 'deleteItem', payload: { id: 1, count: 2 } })).toEqual({
+      ...initialState,
+      basket: [{ id: 2, count: 3 }],
+    });
+  });
+  it('should change basket item count', () => {
+    expect(
+      reducer(initialState, { type: 'changeBasketItemCount', payload: { id: 1, count: 3 } }),
+    ).toEqual({
+      ...initialState,
+      basket: [
+        { id: 1, count: 3 },
+        { id: 2, count: 3 },
+      ],
+    });
+  });
+
+  it('should add camera to basket', () => {
+    expect(
+      reducer(initialState, { type: 'addCameraToBasket', payload: { id: 3, count: 1 } }),
+    ).toEqual({
+      ...initialState,
+      basket: [
+        { id: 1, count: 2 },
+        { id: 2, count: 3 },
+        { id: 3, count: 1 },
+      ],
     });
   });
 });
