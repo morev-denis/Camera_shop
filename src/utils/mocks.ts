@@ -10,8 +10,10 @@ import { Promo } from '../types/promo';
 
 import { REVIEWS_COUNT } from '../const';
 
+let fakeCameraId = 1;
+
 export const makeFakeCamera = (): Camera => ({
-  id: datatype.number(1000),
+  id: fakeCameraId++,
   name: commerce.productName(),
   vendorCode: datatype.uuid(),
   type: commerce.productAdjective(),
@@ -34,7 +36,7 @@ export const makeFakeSimilarCameras = (): Cameras =>
   Array.from({ length: 20 }, (element, i) => makeFakeCamera());
 
 export const makeFakePromo = (): Promo => ({
-  id: datatype.number(1000),
+  id: datatype.number(),
   name: commerce.productName(),
   previewImg: internet.url(),
   previewImg2x: internet.url(),
