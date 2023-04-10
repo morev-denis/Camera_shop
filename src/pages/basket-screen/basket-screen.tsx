@@ -79,7 +79,7 @@ const BasketScreen = () => {
                   </Link>
                 </li>
                 <li className="breadcrumbs__item">
-                  <Link className="breadcrumbs__link" to={AppRoute.Catalog}>
+                  <Link className="breadcrumbs__link" to={'/catalog/page_1'}>
                     Каталог
                     <svg width="5" height="8" aria-hidden="true">
                       <use xlinkHref="#icon-arrow-mini"></use>
