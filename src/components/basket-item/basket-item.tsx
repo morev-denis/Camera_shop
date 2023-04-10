@@ -19,34 +19,40 @@ const BasketItem = ({ item }: Props) => {
   const { cameras } = useAppSelector((state) => state);
   const camera = cameras?.find((element) => element.id === item.id);
 
-  const [count, setCount] = useState(item.count);
+  const [count, setCount] = useState(String(item.count));
   const [isBasketRemoveItemModalOpen, setBasketRemoveItemModalOpen] = useState(false);
 
   const handlePrevBtnClick = () => {
-    setCount((prev) => prev - 1);
-    dispatch(changeBasketItemCount({ id: item.id, count: count - 1 }));
+    setCount((prev) => String(Number(prev) - 1));
+    dispatch(changeBasketItemCount({ id: item.id, count: Number(count) - 1 }));
   };
 
   const handleNextBtnClick = () => {
-    setCount((prev) => prev + 1);
-    dispatch(changeBasketItemCount({ id: item.id, count: count + 1 }));
+    setCount((prev) => String(Number(prev) + 1));
+    dispatch(changeBasketItemCount({ id: item.id, count: Number(count) + 1 }));
   };
 
   const handleInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
     if (Number(evt.target.value) <= MIN_ITEM_COUNT) {
-      setCount(MIN_ITEM_COUNT);
-      dispatch(changeBasketItemCount({ id: item.id, count: MIN_ITEM_COUNT }));
+      setCount('');
       return;
     }
 
     if (Number(evt.target.value) > MAX_ITEM_COUNT) {
-      setCount(MAX_ITEM_COUNT);
+      setCount(String(MAX_ITEM_COUNT));
       dispatch(changeBasketItemCount({ id: item.id, count: MAX_ITEM_COUNT }));
       return;
     }
 
-    setCount(Number(evt.target.value));
+    setCount(evt.target.value);
     dispatch(changeBasketItemCount({ id: item.id, count: Number(evt.target.value) }));
+  };
+
+  const handleInputBlur = (evt: ChangeEvent<HTMLInputElement>) => {
+    if (!evt.target.value) {
+      setCount(String(MIN_ITEM_COUNT));
+      dispatch(changeBasketItemCount({ id: item.id, count: MIN_ITEM_COUNT }));
+    }
   };
 
   const handleDeleteItem = () => {
@@ -93,7 +99,7 @@ const BasketItem = ({ item }: Props) => {
         <div className="quantity">
           <button
             className="btn-icon btn-icon--prev"
-            disabled={count <= MIN_ITEM_COUNT}
+            disabled={Number(count) <= MIN_ITEM_COUNT}
             aria-label="уменьшить количество товара"
             onClick={handlePrevBtnClick}
           >
@@ -110,10 +116,11 @@ const BasketItem = ({ item }: Props) => {
             max="99"
             aria-label="количество товара"
             onChange={handleInputChange}
+            onBlur={handleInputBlur}
           />
           <button
             className="btn-icon btn-icon--next"
-            disabled={count >= MAX_ITEM_COUNT}
+            disabled={Number(count) >= MAX_ITEM_COUNT}
             aria-label="увеличить количество товара"
             onClick={handleNextBtnClick}
           >
@@ -124,11 +131,11 @@ const BasketItem = ({ item }: Props) => {
         </div>
         <div className="basket-item__total-price">
           <span className="visually-hidden">Общая цена:</span>
-          {(camera.price * count).toLocaleString('ru-Ru')} ₽
+          {(camera.price * Number(count)).toLocaleString('ru-Ru')} ₽
         </div>
         <button
           className="cross-btn"
-          disabled={count >= MAX_ITEM_COUNT}
+          disabled={Number(count) >= MAX_ITEM_COUNT}
           type="button"
           aria-label="Удалить товар"
           onClick={handleDeleteItem}
