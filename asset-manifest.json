@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/Camera_shop/static/css/main.d58b5e1f.css",
+    "main.js": "/Camera_shop/static/js/main.5c446819.js",
+    "index.html": "/Camera_shop/index.html",
+    "main.d58b5e1f.css.map": "/Camera_shop/static/css/main.d58b5e1f.css.map",
+    "main.5c446819.js.map": "/Camera_shop/static/js/main.5c446819.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d58b5e1f.css",
+    "static/js/main.5c446819.js"
+  ]
+}
